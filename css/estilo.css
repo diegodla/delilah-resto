@@ -1,0 +1,84 @@
+form
+{
+    width: 800px;
+    margin: 0px auto;
+    padding: 5px;
+    border: 1px dashed blue;
+}
+
+input[type=text], input[type=password], select[name=pais]
+{
+    display: block;
+    padding: 10px;
+    font-size: x-large;
+    width: 97%;
+    margin-bottom: 15px;
+}
+
+input[type=number]
+{
+    width: 97%;
+    margin-bottom: 15px;
+    padding: 10px;
+    margin: 0px auto;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #000;
+ }
+ th, td {
+    width: 5%;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    padding: 0.3em;
+    caption-side: bottom;
+    text-align: center;
+ }
+ caption {
+    padding: 0.3em;
+    color: #fff;
+     background: #000;
+ }
+ th {
+    background: #eee;
+ }
+ h1{
+    text-align: center;
+ }
+ 
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button1{
+    background-color: white; 
+    color: black; 
+    border: 2px solid #4CAF50;
+}
+.button1:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+.button2{
+    background-color: white; 
+    color: black; 
+    border: 2px solid #c44534;
+}
+.button2:hover {
+    background-color: #c44534;
+    color: white;
+}
