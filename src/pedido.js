@@ -1,10 +1,11 @@
 class Pedido {
-    constructor(numero, usuario, listaProductos, estado, precioTotal){
+    constructor(numero, idusuario, listaProductos, estado, precioTotal, isDeleted){
         this.nuermo = numero;
-        this.usuario = usuario;
+        this.idusuario = idusuario;
         this.listaProductos = listaProductos;
         this.estado = estado;
         this.precioTotal =precioTotal;
+        this.isDeleted = isDeleted;
     }
 
     getNumero(){return this.numero;}
@@ -21,4 +22,9 @@ class Pedido {
 
     getprecioTotal(){return this.precioTotal;}
     setprecioTotal(precioTotal){this.precioTotal = precioTotal;}
+
+    getIsDeleted(){return this.isDeleted;}
+    setprecioTotal(isDeleted){this.isDeleted = isDeleted;}
 }
+
+let pedidos=[];
