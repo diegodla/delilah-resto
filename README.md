@@ -1,2 +1,2 @@
-# delilah-resto
-Gestor de pedidos resto
+# Delilah Resto
+Gestor de pedidos para resto
