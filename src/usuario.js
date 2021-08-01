@@ -106,7 +106,6 @@ function createUser(user, pass, pass2, phone,name, surname, email, dni, country)
         console.log("ID:"+id);
         console.log("Conincidencia en password:"+textCompare(pass,pass2));
         console.log("Campos obligatorios llenos:"+camposObligatorios);
-
     }
 }
 
@@ -132,7 +131,7 @@ function getUserId(user, email){
     return id;
 }
 
-function delUser(userId){
+function deleteUser(userId){
     users[userId].setIsDeleted(true);
 }
 

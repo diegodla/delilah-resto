@@ -1,30 +1,30 @@
 class Pedido {
-    constructor(numero, idusuario, listaProductos, estado, precioTotal, isDeleted){
-        this.nuermo = numero;
-        this.idusuario = idusuario;
-        this.listaProductos = listaProductos;
-        this.estado = estado;
-        this.precioTotal =precioTotal;
+    constructor(number, usuarioId, productList, status, totalPrice, isDeleted){
+        this.nuermo = number;
+        this.usuarioId = usuarioId;
+        this.productList = productList;
+        this.status = status;
+        this.totalPrice =totalPrice;
         this.isDeleted = isDeleted;
     }
 
-    getNumero(){return this.numero;}
-    setNumero(numero){this.numero=numero;}
+    getNumber(){return this.number;}
+    setNumber(number){this.number=number;}
 
     getUsuario(){return this.usuario;}
     setUsuario(usuario){this.usuario=usuario;}
 
-    getListaProductos(){return this.listaProductos;}
-    setListaProductos(listaProductos){this.listaProductos=listaProductos;}
+    getProductList(){return this.productList;}
+    setProductList(productList){this.productList=productList;}
 
-    getEstado(){return this.estado;}
-    setEstado(estado){this.estado=estado;}
+    getStatus(){return this.status;}
+    setStatus(status){this.status=status;}
 
-    getprecioTotal(){return this.precioTotal;}
-    setprecioTotal(precioTotal){this.precioTotal = precioTotal;}
+    getTotalPrice(){return this.totalPrice;}
+    setTotalPrice(totalPrice){this.totalPrice = totalPrice;}
 
     getIsDeleted(){return this.isDeleted;}
-    setprecioTotal(isDeleted){this.isDeleted = isDeleted;}
+    setIsDeleted(isDeleted){this.isDeleted = isDeleted;}
 }
 
 let pedidos=[];

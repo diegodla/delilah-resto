@@ -1,5 +1,6 @@
-//listo los usuarios de prueba
-console.log(usuarios);
+let app = express();
+
+
 
 sessionStorage.setItem('autenticado', autenticado);
 
