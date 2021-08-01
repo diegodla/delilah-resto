@@ -1,6 +1,62 @@
-let app = express();
+const express = require('express');
+const app = express();
+const config = require('./config');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
+app.listen(config.port, () => console.log("listening on 5000"));
 
 
+const swaggerOptions = {
+    swaggerDefinition: {
+      info: {
+        title: 'Delilah Resto',
+        version: '1.0.0'
+      }
+    },
+    apis: ['./src/app.js'],
+  };
+  const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-sessionStorage.setItem('autenticado', autenticado);
+app.use('/delilah-docs',
+   swaggerUI.serve,
+   swaggerUI.setup(swaggerDocs));
+
+// Middlewa que verifica si el usuario es un administrador.
+function isAdmin(req, res, next) {
+    if (req.body.isAdmin) {
+      next();
+    } else {
+      res.status(403).send(`El usuario actual no es administrador, no tiene acceso a la ruta ${req.url}`);
+    }
+}
+// Permite recibir parámetros en formato JSON.
+app.use(express.json());
+// Se agrega el middleware en la aplicación.
+app.use(isAdmin);
+
+/**
+ * @swagger
+ * /dashboard:
+ *  post:
+ *    description: Crea un nuevo estudiante
+ *    parameters:
+ *    - name: nombre
+ *      description: Nombre del estudiante
+ *      in: formData
+ *      required: true
+ *      type: string
+  *    - name: edad
+ *      description: Edad del estudiante
+ *      in: formData
+ *      required: true
+ *      type: integer
+ *    responses:
+ *      200:
+ *        description: Success
+ * 
+ */
+app.get('/dashboard', (req, res) => {
+    res.send('You are an admin');
+  });
 

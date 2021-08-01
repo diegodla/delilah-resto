@@ -1,10 +1,14 @@
 class Persona {
-    constructor(name, surname, email, dni, country){
+    constructor(name, surname, email, dni, phone, address, country){
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.dni = dni;
+        this.phone = phone;
+        this.address=address;
         this.country =country;
+        
+       
     }
     getName(){return this.name;}
     setName(name){this.name=name;}
@@ -18,18 +22,23 @@ class Persona {
     getDni(){return this.dni;}
     setDni(dni){this.dni=dni;}
 
+    getPhone(){return this.phone;}
+    setPhone(phone){this.phone=phone;}
+
+    getAddress(){return this.address;}
+    setAddress(address){this.address=address;}
+
     getCountry(){return this.country;}
     setCountry(country){this.country = country;}
 }
 
 
 class Usuario extends Persona {
-    constructor(user, password, isAdmin, phone, name, surname, email, dni, country, isDeleted){
-        super (name, surname, email, dni, country);
+    constructor(user, password, isAdmin, name, surname, email, dni, phone, address,country, isDeleted){
+        super (name, surname, email, dni, phone, address,country);
         this.user = user;
         this.password = password;
         this.isAdmin = isAdmin;
-        this.phone = phone;
         this.isDeleted = isDeleted;
     }
 
@@ -42,19 +51,21 @@ class Usuario extends Persona {
     getIsAdmin(){return this.isAdmin;}
     setSetIsAdmin(isAdmin){this.isAdmin=isAdmin;}
 
-    getPhone(){return this.phone;}
-    setPhone(phone){this.phone=phone;}
-
     getIsDeleted(){return this.isDeleted;}
     setIsDeleted(isDeleted){this.isDeleted = isDeleted;}
 }
 
 let users = [];
-createUser("admin", "delcontrol", true, "151234987" ,"Administrator",null, "admin@delilah-resto.com", null, "Argentina", false);
-createUser("adrielb", "adrielpass", false, "154698987" ,"Adriel","Baez", "adriel@baez.com", "41234567", "Argentina", false);
-createUser("derlism", "derlispass", false, "151233279" ,"Derlis","Martinez", "derlis@martinez.com","92014976", "Colombia", false);
-createUser("juliom", "juliopass", false, "158732487" ,"Julio Cesar","Marquez", "julio@marquez", "358569741", "Argentina", false);
-createUser("diegol", "diegopass", false, "153278461" ,"Administrator","Lecuna", "lecuna.diego@mail.com", "32473500", "Argentina", false);
+
+
+
+let admin = new Usuario("admin", "delicontrol", true, "admin", null, "admin@delilah-resto.com", null, "444000", "Perito Moreno 247", "Argentina", false);
+users.push(admin);
+createUser("adrielb", "adrielpass", "adrielpass", "154698987" ,"Adriel","Baez", "adriel@baez.com", "41234567", "Piedras 141","Argentina");
+createUser("derlism", "derlispass", "derlispass", "151233279" ,"Derlis","Martinez", "derlis@martinez.com","92014976", "Paso 551","Colombia");
+createUser("juliom", "juliopass", "juliopass", "158732487" ,"Julio Cesar","Marquez", "julio@marquez", "358569741", "Av. Cabildo 65","Argentina");
+createUser("diegol", "diegopass", "diegopass", "153278461" ,"Diego","Lecuna", "lecuna.diego@mail.com", "32473500", "9 de julio 1050","Argentina");
+console.log(users);
 
 function textCompare(texto1, texto2){
     let iguales = false;
@@ -82,10 +93,11 @@ function login(user, pass){
     return autenticado;
 }
 
-function createUser(user, pass, pass2, phone,name, surname, email, dni, country){
+function createUser(user, pass, pass2, phone, name, surname, email, dni,  address, country){
     //compruebo que los campos obligatorios esten con valores
     let camposObligatorios = true;
-    if(!user || !pass || !pass2 || !phone || !name || !surname|| !email || !dni|| !country){
+    if(user==null || pass==null || pass2==null || name==null || surname==null || email==null || dni==null  || phone==null || address==null || country==null){
+    //if(!user || !pass || !pass2 || !name || !surname || !email || !dni  || !phone || !address || !country){
         camposObligatorios=false;
         console.log("Hay algun campo vacio, fijate");
     }
@@ -95,11 +107,10 @@ function createUser(user, pass, pass2, phone,name, surname, email, dni, country)
     //ademas si textCompare retorna true entonces las contraseñas coinciden
     //Ademas compruebo que los campos no esten vacios
     if(id == -1 && textCompare(pass,pass2) && camposObligatorios)
-    {
-        let newUser = new Usuario(user, pass, false, phone, name, surname, email, dni, country, false);
+    {  
+        let newUser = new Usuario(user, pass, false, name, surname, email, dni, phone, address, country, false);
         users.push(newUser);
         console.log("//////////////USUARIO CREADO////////////////");
-        console.log(users);
     }
     else{
         console.log("NO CUMPLISTE ALGUNA CONDICION");
@@ -116,7 +127,7 @@ function getUserId(user, email){
     users.forEach(function(thisuser, idArray){   
         //Obtengo un usuario del array Y..
         //Primero compruebo si el usuario es igual al dato que me pasaron. de ser asi retorno el id ya que el usuario existe
-        if (user == thisuser.getuser() && user.getIsDeleted() == false){
+        if (user == thisuser.getUser() && user.getIsDeleted() == false){
             id = idArray;
             return id;
         }
@@ -149,4 +160,15 @@ function modifyUser(userId, pass, pass2, phone,name, surname, email, dni, countr
 
 function modifyIsAdmin(userId, isAdmin){
     users[userId].setSetIsAdmin(isAdmin);
+}
+
+function findUser(userId){
+    let exist = false;
+    users.forEach(function(user, index){
+        if (index == userId)
+        {
+            exist = true;
+        }
+    })
+    return exist;
 }
