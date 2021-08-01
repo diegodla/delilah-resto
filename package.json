@@ -1,5 +1,5 @@
 {
-  "name": "myapp",
+  "name": "delilah-resto",
   "version": "1.0.0",
   "description": "Aplicacion de administracion de pedidos de comidas",
   "main": "js/app.js",
@@ -13,5 +13,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Diego Lecuna",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegodla/delilah-resto.git"
+  },
+  "bugs": {
+    "url": "https://github.com/diegodla/delilah-resto/issues"
+  },
+  "homepage": "https://github.com/diegodla/delilah-resto#readme"
 }
