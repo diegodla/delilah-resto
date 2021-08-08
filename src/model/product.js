@@ -40,7 +40,7 @@ function createProduct(name, description, price){
     if(!findProductName(name) && !isNaN(price))
     {
         let newProduct = new Producto(name, description, price, false);
-        users.push(newProduct);
+        products.push(newProduct);
         console.log("//////////////PRODUCTO CREADO////////////////");
     }
     else{

@@ -1,4 +1,4 @@
-class Persona {
+class Person {
     constructor(name, surname, email, dni, phone, address, country){
         this.name = name;
         this.surname = surname;
@@ -6,9 +6,7 @@ class Persona {
         this.dni = dni;
         this.phone = phone;
         this.address=address;
-        this.country =country;
-        
-       
+        this.country =country;  
     }
     getName(){return this.name;}
     setName(name){this.name=name;}
@@ -33,7 +31,7 @@ class Persona {
 }
 
 
-class Usuario extends Persona {
+class User extends Person {
     constructor(user, password, isAdmin, name, surname, email, dni, phone, address,country, isDeleted){
         super (name, surname, email, dni, phone, address,country);
         this.user = user;
@@ -58,8 +56,7 @@ class Usuario extends Persona {
 let users = [];
 
 
-
-let admin = new Usuario("admin", "delicontrol", true, "admin", null, "admin@delilah-resto.com", null, "444000", "Perito Moreno 247", "Argentina", false);
+let admin = new User("admin", "delicontrol", true, "admin", null, "admin@delilah-resto.com", null, "444000", "Perito Moreno 247", "Argentina", false);
 users.push(admin);
 createUser("adrielb", "adrielpass", "adrielpass", "154698987" ,"Adriel","Baez", "adriel@baez.com", "41234567", "Piedras 141","Argentina");
 createUser("derlism", "derlispass", "derlispass", "151233279" ,"Derlis","Martinez", "derlis@martinez.com","92014976", "Paso 551","Colombia");
@@ -108,7 +105,7 @@ function createUser(user, pass, pass2, phone, name, surname, email, dni,  addres
     //Ademas compruebo que los campos no esten vacios
     if(id == -1 && textCompare(pass,pass2) && camposObligatorios)
     {  
-        let newUser = new Usuario(user, pass, false, name, surname, email, dni, phone, address, country, false);
+        let newUser = new User(user, pass, false, name, surname, email, dni, phone, address, country, false);
         users.push(newUser);
         console.log("//////////////USUARIO CREADO////////////////");
     }
@@ -162,6 +159,7 @@ function modifyIsAdmin(userId, isAdmin){
     users[userId].setSetIsAdmin(isAdmin);
 }
 
+//verificar para BORRAR////////////////////////////////////////
 function findUser(userId){
     let exist = false;
     users.forEach(function(user, index){
@@ -172,3 +170,5 @@ function findUser(userId){
     })
     return exist;
 }
+
+module.exports={Persona, Usuario, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser};
