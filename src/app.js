@@ -3,30 +3,28 @@ const app = express();
 const config = require('./config');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'Delilah Resto',
+      version: '1.0.0'
+    }
+  },
+  apis: ['./src/app.js'],
+};
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-const usuarioModule = require('./model/user');
-const productoModule = require ('./model/product');
-const pedidoModule = require ('./model/order');
-const medioDePagoModule=  require('./model/paymentmethod');
+const initModule = require('./models/init');
+const routerUsers = require('./routes/users');
+const routerProducts = require('./routes/products');
 
-
-const users = require('./routes/users');
-const products = require('./routes/products');
-app.use('/users',users);
-app.use('/products',products);
-
+app.use('/users',routerUsers);
+app.use('/products',routerProducts);
+app.use(express.json())
 app.listen(config.port, () => console.log("listening on "+config.port));
 
-const swaggerOptions = {
-    swaggerDefinition: {
-      info: {
-        title: 'Delilah Resto',
-        version: '1.0.0'
-      }
-    },
-    apis: ['./src/app.js'],
-  };
-  const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+
 
 app.use('/delilah-docs',
    swaggerUI.serve,
@@ -80,7 +78,7 @@ app.get('/dashboard', (req, res) => {
   });
 
 
-  app.post("/order/:id", isLogged, (req,res)=>{
+  /*app.post("/order/:id", isLogged, (req,res)=>{
     let userId= req.body.id;
     let products=[];
     let payment= req.body.payment;
@@ -93,4 +91,4 @@ app.get('/dashboard', (req, res) => {
     orderModule.products.push(order01);
 
     res.json(order01);
-  });
+  });*/

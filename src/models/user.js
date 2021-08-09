@@ -32,37 +32,28 @@ class Person {
 
 
 class User extends Person {
-    constructor(user, password, isAdmin, name, surname, email, dni, phone, address,country, isDeleted){
+    constructor(userName, password, name, surname, email, dni, phone, address,country){
         super (name, surname, email, dni, phone, address,country);
-        this.user = user;
+        this.userName = userName;
         this.password = password;
-        this.isAdmin = isAdmin;
-        this.isDeleted = isDeleted;
+        this.isAdmin = false;
+        this.isDeleted = false;
     }
 
-    getUser(){return this.user;}
-    setUser(user){this.user=user;}
+    getUserName(){return this.userName;}
+    setUserName(userName){this.userName=userName;}
 
     getPassword(){return this.password;}
     setPassword(password){this.password=password;}
 
     getIsAdmin(){return this.isAdmin;}
-    setSetIsAdmin(isAdmin){this.isAdmin=isAdmin;}
+    setIsAdmin(isAdmin){this.isAdmin=isAdmin;}
 
     getIsDeleted(){return this.isDeleted;}
     setIsDeleted(isDeleted){this.isDeleted = isDeleted;}
 }
 
 let users = [];
-
-
-let admin = new User("admin", "delicontrol", true, "admin", null, "admin@delilah-resto.com", null, "444000", "Perito Moreno 247", "Argentina", false);
-users.push(admin);
-createUser("adrielb", "adrielpass", "adrielpass", "154698987" ,"Adriel","Baez", "adriel@baez.com", "41234567", "Piedras 141","Argentina");
-createUser("derlism", "derlispass", "derlispass", "151233279" ,"Derlis","Martinez", "derlis@martinez.com","92014976", "Paso 551","Colombia");
-createUser("juliom", "juliopass", "juliopass", "158732487" ,"Julio Cesar","Marquez", "julio@marquez", "358569741", "Av. Cabildo 65","Argentina");
-createUser("diegol", "diegopass", "diegopass", "153278461" ,"Diego","Lecuna", "lecuna.diego@mail.com", "32473500", "9 de julio 1050","Argentina");
-console.log(users);
 
 function textCompare(texto1, texto2){
     let iguales = false;
@@ -106,7 +97,7 @@ function createUser(user, pass, pass2, phone, name, surname, email, dni,  addres
     //Ademas compruebo que los campos no esten vacios
     if(id == -1 && textCompare(pass,pass2) && camposObligatorios)
     {  
-        let newUser = new User(user, pass, false, name, surname, email, dni, phone, address, country, false);
+        let newUser = new User(user, pass, name, surname, email, dni, phone, address, country);
         users.push(newUser);
         console.log("//////////////USUARIO CREADO////////////////");
     }
@@ -125,7 +116,7 @@ function getUserId(user, email){
     users.forEach(function(thisuser, idArray){   
         //Obtengo un usuario del array Y..
         //Primero compruebo si el usuario es igual al dato que me pasaron. de ser asi retorno el id ya que el usuario existe
-        if (user == thisuser.getUser() && user.getIsDeleted() == false){
+        if (user == thisuser.getUserName() && user.getIsDeleted() == false){
             id = idArray;
             return id;
         }
@@ -141,6 +132,9 @@ function getUserId(user, email){
 }
 
 function deleteUser(userId){
+    //TODO validar si el usuario existe o no.
+    //if (userExist(userId)){
+    //}
     users[userId].setIsDeleted(true);
 }
 
@@ -160,7 +154,7 @@ function modifyIsAdmin(userId, isAdmin){
     users[userId].setSetIsAdmin(isAdmin);
 }
 
-//verificar para BORRAR////////////////////////////////////////
+//verificar pra BORRAR////////////////////////////////////////
 function findUser(userId){
     let exist = false;
     users.forEach(function(user, index){
@@ -172,4 +166,4 @@ function findUser(userId){
     return exist;
 }
 
-module.exports={Persona, Usuario, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser};
+module.exports={User, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser};

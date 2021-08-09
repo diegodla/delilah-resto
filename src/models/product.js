@@ -22,11 +22,7 @@ class Product{
 let products=[];
 //algunos productos de prueba
 
-createProduct("Lomito Completo", "Sanguche de Lomo, tomate, lechuga, cebolla caramelizada, queso y mayonesa", 750,50);
-createProduct("Hambuguesa Completa", "Sanguche de hamburguesa, tomate, lechuga, cebolla caramelizada, queso y mayonesa",  520,75);
-createProduct("Pizza Napolitana", "Salsa, Muzzarella, Ajo, Tomate, Perejil", 600,00);
-createProduct("Empanada de Carne Frita / Unidad", "Relleno de Carne, huevo, cebolla y morrones", 90,00);
-createProduct("Empanada de Pollo al Horno/ Unidad", "Relleno de pollo, huevo", 90,00);
+
 
 function createProduct(name, description, price){
     //compruebo que los campos obligatorios esten con valores
@@ -73,3 +69,5 @@ function modifyProduct(productId, name, description, price){
 function deleteProduct(productId, isDeleted){
     product[productId].setIsDeleted(isDeleted);
 }
+
+module.exports={Product, products, createProduct,findProductName,modifyProduct,deleteProduct}
