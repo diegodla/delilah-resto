@@ -4,11 +4,10 @@ const config = require('./config');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
-const usuarioModlue = require('./model/usuario');
-const productoModule = require ('./model/producto');
-const pedidoModule = require ('./model/pedido');
-const medioDePagoModule=  require('./model/mediodepago');
-
+const usuarioModule = require('./model/user');
+const productoModule = require ('./model/product');
+const pedidoModule = require ('./model/order');
+const medioDePagoModule=  require('./model/paymentmethod');
 
 
 const users = require('./routes/users');
@@ -16,7 +15,7 @@ const products = require('./routes/products');
 app.use('/users',users);
 app.use('/products',products);
 
-app.listen(config.port, () => console.log("listening on 5000"));
+app.listen(config.port, () => console.log("listening on "+config.port));
 
 const swaggerOptions = {
     swaggerDefinition: {

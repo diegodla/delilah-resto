@@ -73,6 +73,7 @@ function textCompare(texto1, texto2){
 }
 
 function login(user, pass){
+    //En este caso los parametros son user, user ya que puede llegar directamente el usuario, pero tambien puede loguear por email.
     let id = getUserId(user, user);
     let autenticado = false;
 

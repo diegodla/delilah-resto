@@ -1,4 +1,4 @@
-class Producto{
+class Product{
     constructor(name, description, price, isDeleted){
         this.name = name;
         this.description = description;
@@ -39,7 +39,7 @@ function createProduct(name, description, price){
     //verifico que no exista el mismo nombre del producto antes de crearlo y que el precio sea numerico
     if(!findProductName(name) && !isNaN(price))
     {
-        let newProduct = new Producto(name, description, price, false);
+        let newProduct = new Product(name, description, price, false);
         products.push(newProduct);
         console.log("//////////////PRODUCTO CREADO////////////////");
     }
