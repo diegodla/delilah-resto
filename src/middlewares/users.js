@@ -10,8 +10,8 @@ function isExists(req, res, next) {
 }
 function login(req, res, next) {
     let logedin = userModule.login(req.body.userName, req.body.password);
-    if (logedin) {
-        userModule.logedUsers.push(req.body.userName);
+    if (logedin>-1) {
+        userModule.logedUsers.push(logedin);
         req.user = userModule.users[userModule.getUserId(req.body.userName,req.body.userName)];
         next();
     } else {
@@ -20,16 +20,17 @@ function login(req, res, next) {
     }
 }
 function logout(req, res, next) {
-    let id = -1;
-    userModule.logedUsers.forEach(function(user, index){
-        if (user.userName == req.userName)
+    let id = req.body.userId;
+    loguedIndex=-1;
+    userModule.logedUsers.forEach(function(userId, index){
+        if (userId == id)
         {
-            id =index;
+            loguedIndex =index;
         }
     })
     
-    if (id > -1) {
-        userModule.logedUsers.pop(id);
+    if (loguedIndex > -1) {
+        userModule.logedUsers.pop(loguedIndex);
         next();
     } else {
         res.status(404).send({ resultado: false, mensaje: `el usuario no se encontraba logueado` });

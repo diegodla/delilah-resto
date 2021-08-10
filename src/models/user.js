@@ -64,15 +64,13 @@ function textCompare(texto1, texto2){
 
 function login(user, pass){
     //En este caso los parametros son user, user ya que puede llegar directamente el usuario, pero tambien puede loguear por email.
-    let id = getUserId(user, user);
-    let autenticado = false;
-
-    if(id >-1 && users[id].getPassword() == pass)
+    let id = -1;
+    tempid = getUserId(user, user);
+    if(tempid >-1 && users[tempid].getPassword() == pass)
     {
-        //la variable autenticado la voy a utilizar para saber si los datos coincidieron con los previamente guardados
-        autenticado = true;
+        id = tempid;
     }
-    return autenticado;
+    return id;
 }
 
 function createUser(user, pass, pass2, phone, name, surname, email, dni,  address, country){

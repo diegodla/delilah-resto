@@ -31,7 +31,7 @@ router.post('/login', login, function (req, res){
 router.post('/logout', logout, function (req, res){
   console.log("USUARIOS LOGUEADOS");
   console.log(userModule.logedUsers)
-  res.json(req.user);
+  res.send('Logout exitoso')
 })
 router.put('/:id', modifyUser, function (req, res){
   res.json(userModule.listActiveUsers());
