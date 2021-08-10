@@ -1,9 +1,9 @@
 class Product{
-    constructor(name, description, price, isDeleted){
+    constructor(name, description, price){
         this.name = name;
         this.description = description;
         this.price = price;
-        this.isDeleted=isDeleted;
+        this.isDeleted=false;
     }
 
     getName(){return this.name;}
@@ -20,13 +20,12 @@ class Product{
 }
 
 let products=[];
-//algunos productos de prueba
-
 
 
 function createProduct(name, description, price){
     //compruebo que los campos obligatorios esten con valores
     let camposObligatorios = true;
+    let createConfirm = false;
     if(!name || !description || !price ){
         camposObligatorios=false;
         console.log("Hay algun campo vacio");
@@ -37,6 +36,7 @@ function createProduct(name, description, price){
     {
         let newProduct = new Product(name, description, price, false);
         products.push(newProduct);
+        createConfirm = true;
         console.log("//////////////PRODUCTO CREADO////////////////");
     }
     else{
@@ -46,6 +46,7 @@ function createProduct(name, description, price){
         console.log("El nombre es unico:"+!findProductName(name));
         console.log("Campos obligatorios llenos:"+camposObligatorios);
     }
+    return createConfirm;
 }
 
 function findProductName(name){
@@ -63,11 +64,25 @@ function modifyProduct(productId, name, description, price){
         product[productId].setName(name);
         product[productId].setDescription(description);
         product[productId].setPrice(price);
+    }
+    else{
+        console.log("//////////////EL PRODUCTO NO FUE MODIFICADO////////////////");
+        console.log("Alguno de los campos esta vacio o es erroneo");
+        console.log("El precio es un numero:"+!isNaN(price));
+        console.log("El nombre es unico:"+!findProductName(name));
+        console.log("Campos obligatorios llenos:"+camposObligatorios);
     }      
 }
 
-function deleteProduct(productId, isDeleted){
-    product[productId].setIsDeleted(isDeleted);
+function deleteProduct(productId){
+    if(productId > -1 && productId<products.length && !products[productId].getIsDeleted) 
+    {
+        products[productId].setIsDeleted(true);
+    }
+    else{
+        console.log("El indice no existe, no puede ser eliminado");
+    }
+    
 }
 
 module.exports={Product, products, createProduct,findProductName,modifyProduct,deleteProduct}

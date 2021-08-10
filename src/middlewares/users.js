@@ -1,8 +1,7 @@
-const userModule = require('../models/user')
+const userModule = require('../models/user');
 
 function isExists(req, res, next) {
-    let id = usuarioModule.getUserId(req.body.userName, req.body.email);
-    console.log(req.body,index);
+    let id = userModule.getUserId(req.body.userName, req.body.email);
     if (id !== -1) {
         res.status(404).send({ resultado: false, mensaje: `Usuario ya registrado con ese email y/o username` });
     } else {
@@ -10,15 +9,64 @@ function isExists(req, res, next) {
     }
 }
 function login(req, res, next) {
-    let logedin = usuarioModule.login(req.body.userName, req.body.password);
-    console.log(req.body,index);
-    if (!logedin) {
-        res.status(404).send({ resultado: false, mensaje: `el usuario o la contraseña son incorrectos` });
-    } else {
-        req.id;
-        req.user = userModule.users[id];
+    let logedin = userModule.login(req.body.userName, req.body.password);
+    if (logedin) {
+        userModule.logedUsers.push(req.body.userName);
+        req.user = userModule.users[userModule.getUserId(req.body.userName,req.body.userName)];
         next();
+    } else {
+        res.status(404).send({ resultado: false, mensaje: `el usuario o la contraseña son incorrectos` });
+        
+    }
+}
+function logout(req, res, next) {
+    let id = -1;
+    userModule.logedUsers.forEach(function(user, index){
+        if (user.userName == req.userName)
+        {
+            id =index;
+        }
+    })
+    
+    if (id > -1) {
+        userModule.logedUsers.pop(id);
+        next();
+    } else {
+        res.status(404).send({ resultado: false, mensaje: `el usuario no se encontraba logueado` });
+        
     }
 }
 
-module.exports = {isExists, login}
+function isloged(req, res, next){
+    if (userModule.isloged(req.params.id))
+    {
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `el usuariono no esta logueado` });
+    }
+}
+
+function deleteUser(req, res, next){
+    if (userModule.deleteUser(req.params.id))
+    {
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `el usuario no existe, no se realizo la tarea de eliminar` });
+    }
+}
+
+function modifyUser(req, res, next){
+    let userId = req.params.id;
+    let {password, password2, phone,name, surname, email, address,country} = req.body;
+    if (userModule.modifyUser(userId, password,password2,phone,name,surname,email, address,country))
+    {
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `No se pudo modificar el usuario` });
+    }
+}
+
+module.exports = {isExists, login, isloged, logout, deleteUser, modifyUser}

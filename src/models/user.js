@@ -29,8 +29,6 @@ class Person {
     getCountry(){return this.country;}
     setCountry(country){this.country = country;}
 }
-
-
 class User extends Person {
     constructor(userName, password, name, surname, email, dni, phone, address,country){
         super (name, surname, email, dni, phone, address,country);
@@ -54,6 +52,7 @@ class User extends Person {
 }
 
 let users = [];
+let logedUsers=[];
 
 function textCompare(texto1, texto2){
     let iguales = false;
@@ -72,12 +71,6 @@ function login(user, pass){
     {
         //la variable autenticado la voy a utilizar para saber si los datos coincidieron con los previamente guardados
         autenticado = true;
-    }
-    if(autenticado){
-        console.log("Sesion iniciada correctamente");
-    } 
-    else{
-        console.log("Los datos ingreados no coinciden con nuestros");
     }
     return autenticado;
 }
@@ -99,7 +92,6 @@ function createUser(user, pass, pass2, phone, name, surname, email, dni,  addres
     {  
         let newUser = new User(user, pass, name, surname, email, dni, phone, address, country);
         users.push(newUser);
-        console.log("//////////////USUARIO CREADO////////////////");
     }
     else{
         console.log("NO CUMPLISTE ALGUNA CONDICION");
@@ -116,13 +108,13 @@ function getUserId(user, email){
     users.forEach(function(thisuser, idArray){   
         //Obtengo un usuario del array Y..
         //Primero compruebo si el usuario es igual al dato que me pasaron. de ser asi retorno el id ya que el usuario existe
-        if (user == thisuser.getUserName() && user.getIsDeleted() == false){
+        if (user == thisuser.getUserName() && thisuser.getIsDeleted() == false){
             id = idArray;
             return id;
         }
         //si lo que escribio la persona no conicide con el usuario pruebo con el email, asi no recorro el array 2 veces.
         // Si el email es igual al dato que me pasaron. de ser asi retorno el id ya que el usuario existe
-        else if(email == thisuser.getEmail() && user.getIsDeleted() == false){
+        else if(email == thisuser.getEmail() && thisuser.getIsDeleted() == false){
             id = idArray;
             return id;
         }
@@ -132,22 +124,27 @@ function getUserId(user, email){
 }
 
 function deleteUser(userId){
-    //TODO validar si el usuario existe o no.
-    //if (userExist(userId)){
-    //}
-    users[userId].setIsDeleted(true);
+    let deleted = false;
+    if(userId >-1 && userId< users.length && !users[userId].isDeleted){
+        users[userId].setIsDeleted(true);
+        deleted = true;
+    }
+    return deleted;
 }
 
-function modifyUser(userId, pass, pass2, phone,name, surname, email, dni, country){
-    if (textCompare(pass, pass2)){
+function modifyUser(userId, pass, pass2, phone,name, surname, email, address, country){
+    let isModified = false;
+    if (textCompare(pass, pass2) && userId>-1 && userId < users.length){
         users[userId].setPassword(pass);
         users[userId].setPhone(phone);
         users[userId].setName(name);
         users[userId].setSurname(surname);
         users[userId].setEmail(email);
-        users[userId].setDni(dni);
+        users[userId].setAddress(address);
         users[userId].setCountry(country);
+        isModified=true;
     }      
+    return isModified;
 }
 
 function modifyIsAdmin(userId, isAdmin){
@@ -165,5 +162,21 @@ function findUser(userId){
     })
     return exist;
 }
+function isLogged(id){
+    let islogged = false;
+    logedUsers.forEach(userId => {
+        if (userId == id)
+        {
+            isLogged = true;
+        }
+    });
+    return islogged;
+}
 
-module.exports={User, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser};
+
+function listActiveUsers(){
+    let activeUsers= users.filter(user => user.getIsDeleted() == false)
+    return activeUsers;
+}
+
+module.exports={User, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser, isLogged, logedUsers,listActiveUsers};

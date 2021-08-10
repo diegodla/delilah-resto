@@ -1,5 +1,6 @@
-const userModule = require('../models/user');
-const productModule = require('../models/product');
+const userModule = require('./user');
+const productModule = require('./product');
+const paymentMModule = require ('./paymentmethod')
 
 /* ********************************* USUARIOS ********************************* */
 
@@ -11,7 +12,6 @@ userModule.createUser("derlism", "derlispass", "derlispass", "151233279" ,"Derli
 userModule.createUser("juliom", "juliopass", "juliopass", "158732487" ,"Julio Cesar","Marquez", "julio@marquez", "358569741", "Av. Cabildo 65","Argentina");
 userModule.createUser("diegol", "diegopass", "diegopass", "153278461" ,"Diego","Lecuna", "lecuna.diego@mail.com", "32473500", "9 de julio 1050","Argentina");
 
-
 /* ********************************* PRODUCTOS ********************************* */
 
 productModule.createProduct("Lomito Completo", "Sanguche de Lomo, tomate, lechuga, cebolla caramelizada, queso y mayonesa", 750,50);
@@ -19,3 +19,11 @@ productModule.createProduct("Hambuguesa Completa", "Sanguche de hamburguesa, tom
 productModule.createProduct("Pizza Napolitana", "Salsa, Muzzarella, Ajo, Tomate, Perejil", 600,00);
 productModule.createProduct("Empanada de Carne Frita / Unidad", "Relleno de Carne, huevo, cebolla y morrones", 90,00);
 productModule.createProduct("Empanada de Pollo al Horno/ Unidad", "Relleno de pollo, huevo", 90,00);
+
+/* ****************************** METODOS DE PAGO ****************************** */
+
+paymentMModule.createPaymentM("Efectivo", "EF");
+paymentMModule.createPaymentM("Tarjeta de Credito", "TC");
+paymentMModule.createPaymentM("Tarjeta de Debito", "TD");
+paymentMModule.createPaymentM("Mercado Pago", "MP");
+paymentMModule.createPaymentM("Transferencia Bancaria", "TRB");

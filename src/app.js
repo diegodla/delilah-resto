@@ -10,7 +10,12 @@ const swaggerOptions = {
       version: '1.0.0'
     }
   },
-  apis: ['./src/app.js'],
+  apis: ['./src/app.js',
+        './src/routes/users.js',
+        './src/routes/products.js',
+        './src/routes/orders.js',
+        './src/routes/paymentM.js',
+        ],
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
@@ -18,22 +23,14 @@ const initModule = require('./models/init');
 const routerUsers = require('./routes/users');
 const routerProducts = require('./routes/products');
 
+app.listen(config.port, () => console.log("listening on "+config.port));
+
 app.use('/users',routerUsers);
 app.use('/products',routerProducts);
 app.use(express.json())
-app.listen(config.port, () => console.log("listening on "+config.port));
-
-
-
-
 app.use('/delilah-docs',
    swaggerUI.serve,
    swaggerUI.setup(swaggerDocs));
-
-
-
-
-
 
 
 //////////////////////////////////////////////////// ACA PARA ABAJO BORRAR/////////////////////////////
@@ -46,9 +43,9 @@ function isAdmin(req, res, next) {
     }
 }
 // Permite recibir parámetros en formato JSON.
-app.use(express.json());
+
 // Se agrega el middleware en la aplicación.
-app.use(isAdmin);
+//app.use(isAdmin);
 
 
 
