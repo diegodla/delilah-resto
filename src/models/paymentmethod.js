@@ -8,15 +8,16 @@ class PaymentMethod {
     setName(name){this.name=name;}
 
     getCode(){return this.code}
-    setCode(){return this.code}
+    setCode(code){this.code = code}
     
     getIsDeleted(){return this.isDeleted;}
-    setUsDeleted(isDeleted){this.isDeleted=isDeleted;}
+    setIsDeleted(isDeleted){this.isDeleted=isDeleted;}
 }
 let paymentMethods = [];
 
 function createPaymentM(name, code){
     let camposObligatorios = true;
+    let created = false;
     if(!name || !code){
         camposObligatorios=false;
         console.log("Hay algun campo vacio");
@@ -26,13 +27,13 @@ function createPaymentM(name, code){
     {
         let newPaymentM = new PaymentMethod(name, code);
         paymentMethods.push(newPaymentM);
+        created = true;
         console.log("//////////////METODO DE PAGO CREADO////////////////");
     }
     else{
         console.log("//////////////EL METOOD DE PAGO NO FUE CREADO////////////////");
-        console.log("Alguno de los campos esta vacio o es erroneo");
-        console.log("FindPaymentCode:"+findPaymentCode(code));
     }
+    return created;
 }
 
 function findPaymentCode(code){
@@ -46,19 +47,32 @@ function findPaymentCode(code){
 }
 
 function modifyPaymentM(paymentMId,name, code){
-    if(!findPaymentCode(code)){
+    let modified = false;
+    if(!findPaymentCode(code)&& paymentMId>-1 && paymentMId< paymentMethods.length){
         paymentMethods[paymentMId].setName(name);
         paymentMethods[paymentMId].setCode(code);
+        modified = true;
     }
     else{
-        console.log("//////////////EL METOOD DE PAGO NO FUE CREADO////////////////");
-        console.log("Alguno de los campos esta vacio o es erroneo");
-        console.log("FindPaymentCode:"+findPaymentCode(code));
+        console.log("//////////////EL METOOD DE PAGO NO FUE Modificado////////////////");
     } 
+    return modified;
 }
 
-function deletePaymentM(productId, isDeleted){
-    product[productId].setIsDeleted(isDeleted);
+function deletePaymentM(paymentId){
+    let deleted = false;
+    console.log(deleted);
+    if (paymentId>-1 && paymentId < paymentMethods.length && paymentMethods[paymentId].getIsDeleted() == false)
+    {
+        paymentMethods[paymentId].setIsDeleted(true);
+        deleted = true;
+    }
+    console.log(deleted);
+    return deleted;
 }
 
-module.exports={PaymentMethod,paymentMethods,createPaymentM,modifyPaymentM,findPaymentCode,deletePaymentM}
+function listActivePaymentM(){
+    let activePaymentM= paymentMethods.filter(paymentM => paymentM.getIsDeleted() == false)
+    return activePaymentM;
+}
+module.exports={PaymentMethod,paymentMethods,createPaymentM,modifyPaymentM,findPaymentCode,deletePaymentM, listActivePaymentM}

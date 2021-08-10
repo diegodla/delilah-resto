@@ -16,7 +16,7 @@ class Product{
     setPrice(price){this.price=price;}
 
     getIsDeleted(){return this.isDeleted;}
-    setUsDeleted(isDeleted){this.isDeleted=isDeleted;}
+    setIsDeleted(isDeleted){this.isDeleted=isDeleted;}
 }
 
 let products=[];
@@ -51,8 +51,9 @@ function createProduct(name, description, price){
 
 function findProductName(name){
     let productExist = false;
+    console.log(name);
     products.forEach(function(product){
-        if (product.getName==name){
+        if (product.getName()==name){
             productExist = true;
         }
     })
@@ -60,29 +61,41 @@ function findProductName(name){
 }
 
 function modifyProduct(productId, name, description, price){
-    if (!findProductName(name) && !isNaN(price)){
-        product[productId].setName(name);
-        product[productId].setDescription(description);
-        product[productId].setPrice(price);
+    let modified = false;
+    if (!findProductName(name) && !isNaN(price) && productId>-1 && productId< products.length){
+        products[productId].setName(name);
+        products[productId].setDescription(description);
+        products[productId].setPrice(price);
+        modified=true;
     }
     else{
         console.log("//////////////EL PRODUCTO NO FUE MODIFICADO////////////////");
         console.log("Alguno de los campos esta vacio o es erroneo");
         console.log("El precio es un numero:"+!isNaN(price));
         console.log("El nombre es unico:"+!findProductName(name));
-        console.log("Campos obligatorios llenos:"+camposObligatorios);
-    }      
+    }
+    return modified;      
 }
 
 function deleteProduct(productId){
-    if(productId > -1 && productId<products.length && !products[productId].getIsDeleted) 
+    let deleted = false;
+    console.log(productId);
+    console.log(products[productId].getIsDeleted)
+    console.log(products.length)
+    if(productId > -1 && productId<products.length && !products[productId].getIsDeleted()) 
     {
         products[productId].setIsDeleted(true);
+        deleted = true;
     }
     else{
         console.log("El indice no existe, no puede ser eliminado");
     }
+    return deleted;  
     
 }
+function listActiveProducts(){
+    let activeProducts= products.filter(product => product.getIsDeleted() == false)
+    return activeProducts;
+}
 
-module.exports={Product, products, createProduct,findProductName,modifyProduct,deleteProduct}
+module.exports={Product, products, createProduct,findProductName,modifyProduct,deleteProduct, listActiveProducts}

@@ -10,23 +10,46 @@ const swaggerOptions = {
       version: '1.0.0'
     }
   },
-  apis: ['./src/app.js',
-        './src/routes/users.js',
-        './src/routes/products.js',
-        './src/routes/orders.js',
-        './src/routes/paymentM.js',
-        ],
+  apis: ['./src/app.js', './src/routes/paymentmethod.js'],
+  tags: [
+    {
+        name: 'general',
+        description: 'Operaciones generales'
+    },
+    {
+        name: 'auth',
+        description: 'Operaciones sobre autorización'
+    },
+    {
+        name: 'usuarios',
+        description: 'Operaciones sobre usuarios'
+    },
+    {
+        name: 'pedidos',
+        description: 'Operaciones sobre pedidos'
+    },
+    {
+        name: 'productos',
+        description: 'Operaciones sobre productos'
+    },
+    {
+        name: 'metodosdepago',
+        description: 'Operaciones sobre metodos de pago'
+    },
+]
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 const initModule = require('./models/init');
 const routerUsers = require('./routes/users');
 const routerProducts = require('./routes/products');
+const routerPaymentM = require('./routes/paymentmethod');
 
 app.listen(config.port, () => console.log("listening on "+config.port));
 
 app.use('/users',routerUsers);
 app.use('/products',routerProducts);
+app.use('/paymentmethods', routerPaymentM);
 app.use(express.json())
 app.use('/delilah-docs',
    swaggerUI.serve,
