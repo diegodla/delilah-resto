@@ -29,7 +29,6 @@ function deleteProduct(req, res, next){
     else{
         res.status(404).send({ resultado: false, mensaje: `No se pudo borrar el producto` });
     }
-
 }
 
 module.exports = {createProduct, modifyProduct, deleteProduct}

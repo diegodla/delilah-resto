@@ -1,5 +1,15 @@
 const userModule = require('../models/user');
 
+function createUser(req, res, next){
+    let b = req.body;
+    let created = userModule.createUser(b.userName, b.password, b.password2, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country);
+    if(created){
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `No se pudo crear el usuario` });
+    }
+}
 function isExists(req, res, next) {
     let id = userModule.getUserId(req.body.userName, req.body.email);
     if (id !== -1) {
@@ -38,13 +48,23 @@ function logout(req, res, next) {
     }
 }
 
-function isloged(req, res, next){
-    if (userModule.isloged(req.params.id))
+function isLogged(req, res, next){
+    if (userModule.isLogged(req.params.id))
     {
         next();
     }
     else{
         res.status(404).send({ resultado: false, mensaje: `el usuariono no esta logueado` });
+    }
+}
+
+function isAdmin(req,res,next){
+    if (userModule.isAdmin(req.params.id))
+    {
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `el usuariono no es administrador` });
     }
 }
 
@@ -69,5 +89,4 @@ function modifyUser(req, res, next){
         res.status(404).send({ resultado: false, mensaje: `No se pudo modificar el usuario` });
     }
 }
-
-module.exports = {isExists, login, isloged, logout, deleteUser, modifyUser}
+module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser,createUser, isAdmin}

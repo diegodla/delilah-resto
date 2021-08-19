@@ -79,9 +79,6 @@ function modifyProduct(productId, name, description, price){
 
 function deleteProduct(productId){
     let deleted = false;
-    console.log(productId);
-    console.log(products[productId].getIsDeleted)
-    console.log(products.length)
     if(productId > -1 && productId<products.length && !products[productId].getIsDeleted()) 
     {
         products[productId].setIsDeleted(true);
@@ -90,8 +87,7 @@ function deleteProduct(productId){
     else{
         console.log("El indice no existe, no puede ser eliminado");
     }
-    return deleted;  
-    
+    return deleted;
 }
 function listActiveProducts(){
     let activeProducts= products.filter(product => product.getIsDeleted() == false)

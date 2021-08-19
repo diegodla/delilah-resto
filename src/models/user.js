@@ -75,6 +75,7 @@ function login(user, pass){
 
 function createUser(user, pass, pass2, phone, name, surname, email, dni,  address, country){
     //compruebo que los campos obligatorios esten con valores
+    let created = false; 
     let camposObligatorios = true;
     if(user==null || pass==null || pass2==null || name==null || surname==null || email==null || dni==null  || phone==null || address==null || country==null){
     //if(!user || !pass || !pass2 || !name || !surname || !email || !dni  || !phone || !address || !country){
@@ -90,6 +91,7 @@ function createUser(user, pass, pass2, phone, name, surname, email, dni,  addres
     {  
         let newUser = new User(user, pass, name, surname, email, dni, phone, address, country);
         users.push(newUser);
+        created = true;
     }
     else{
         console.log("NO CUMPLISTE ALGUNA CONDICION");
@@ -97,6 +99,7 @@ function createUser(user, pass, pass2, phone, name, surname, email, dni,  addres
         console.log("Conincidencia en password:"+textCompare(pass,pass2));
         console.log("Campos obligatorios llenos:"+camposObligatorios);
     }
+    return created;
 }
 
 //para comprobar users al momento de login este metodo se puede usaro ingresando user, user. entonces no importa si el usuario ingreso usuario o email. si exsite lo va a encontrar.
@@ -165,16 +168,38 @@ function isLogged(id){
     logedUsers.forEach(userId => {
         if (userId == id)
         {
-            isLogged = true;
+            islogged = true;
         }
     });
     return islogged;
 }
 
+function isAdmin(id){
+    
+    let isAdmin = false; 
+    if (id > -1 && id < users.length){
+        isAdmin = users[id].getIsAdmin();
+    }
+    return isAdmin;
+}
+
+function findAddress(userId){
+    userExist = findUser(userId);
+    let address = "";
+    if (userExist){
+        users.forEach(function(user, index){
+            if (index == userId)
+            {
+                address = user.getAddress();
+            }
+        })
+    }
+    return address;
+}
 
 function listActiveUsers(){
     let activeUsers= users.filter(user => user.getIsDeleted() == false)
     return activeUsers;
 }
 
-module.exports={User, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser, isLogged, logedUsers,listActiveUsers};
+module.exports={User, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser, isLogged, logedUsers,listActiveUsers,findAddress, isAdmin};

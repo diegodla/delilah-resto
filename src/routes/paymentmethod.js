@@ -11,7 +11,7 @@ router.use(express.json())
  * @swagger
  * /paymentmethods:
  *  get:
- *    tags: [metodosdepago]
+ *    tags: [metodos de pago]
  *    summary: paymentmethod
  *    description: Listado de metodos de pago
  *    tag: metodosdepago
@@ -27,7 +27,7 @@ router.get('/', function(req, res){
  * @swagger
  * /paymentmethods:
  *  post:
- *    tags: [metodosdepago]
+ *    tags: [metodos de pago]
  *    summary: Agregar metodo de pago.
  *    description : Se crea nuevo metodo de pago.
  *    consumes:
@@ -45,11 +45,11 @@ router.get('/', function(req, res){
  *            name:
  *              description: nombre del metodo de pago
  *              type: string
- *              example: Mercado Pago
+ *              example: Uala
  *            code:
  *              description: Codigo corto de referencia del metodo de pago
  *              type: string
- *              example: MP
+ *              example: UL
  *    responses:
  *      200:
  *       description: Metodo de pago Agregado 
@@ -57,15 +57,15 @@ router.get('/', function(req, res){
  *       description: el metodo de pago no fue creado
  */
 router.post('/', createPaymentM, function(req, res){
-    res.send('metodo de pago creado')
+    res.json({"Mensaje":"metodo de pago creado"})
 })
 
 router.put('/:id', modifyPaymentM, function(req, res){
-    res.send('metodo de pago modificado')
+    res.json({"Mensaje":"metodo de pago modificado"})
 })
 
 router.delete('/:id', deletePaymentM, function(req, res){
-    res.send('Metodo de pago eliminado')
+    res.json({"Mensaje":"Metodo de pago eliminado"})
 })
 
 module.exports = router;

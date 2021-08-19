@@ -9,13 +9,13 @@ router.get('/', function(req, res){
 })
 
 router.post('/', createProduct, function(req, res){
-  res.send('Producto creado')
+  res.json({"Mensaje":"Producto Creado"})
 })
 router.put('/:id', modifyProduct, function(req, res){
-  res.send('Producto modificado')
+  res.json({"Mensaje":"Producto Modificado"})
 })
 router.delete('/:id', deleteProduct, function(req, res){
-  res.send('Producto eliminado')
+  res.json({"Mensaje":"Producto eliminado"})
 })
 
 module.exports = router;

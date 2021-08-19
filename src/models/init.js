@@ -1,6 +1,7 @@
 const userModule = require('./user');
 const productModule = require('./product');
-const paymentMModule = require ('./paymentmethod')
+const paymentMModule = require('./paymentmethod')
+const orderModule = require('./order')
 
 /* ********************************* USUARIOS ********************************* */
 
@@ -27,3 +28,16 @@ paymentMModule.createPaymentM("Tarjeta de Credito", "TC");
 paymentMModule.createPaymentM("Tarjeta de Debito", "TD");
 paymentMModule.createPaymentM("Mercado Pago", "MP");
 paymentMModule.createPaymentM("Transferencia Bancaria", "TRB");
+
+/* ****************************** ORDENES ****************************** */
+
+orderModule.createOrder(2, "TC", true, "");
+orderModule.orders[0].getProductList().push(productModule.products[0],productModule.products[0]);
+
+orderModule.createOrder(3, "MP", true, "Calle diferente a la del usuario 123");
+orderModule.orders[1].getProductList().push(productModule.products[1],productModule.products[0],productModule.products[2]);
+orderModule.orders[1].setStatus(orderModule.statusList[1]);
+
+orderModule.createOrder(1, "TC",true);
+orderModule.orders[2].getProductList().push(productModule.products[2]);
+orderModule.orders[2].setStatus(orderModule.statusList[2]);
