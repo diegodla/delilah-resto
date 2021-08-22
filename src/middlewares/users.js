@@ -20,17 +20,22 @@ function isExists(req, res, next) {
 }
 function login(req, res, next) {
     let logedin = userModule.login(req.body.userName, req.body.password);
-    if (logedin>-1) {
+    if (logedin>-1 && (userModule.logedUsers.filter(userid => userid == logedin).length==0)) {
         userModule.logedUsers.push(logedin);
-        req.user = userModule.users[userModule.getUserId(req.body.userName,req.body.userName)];
+        req.userid = logedin
         next();
-    } else {
-        res.status(404).send({ resultado: false, mensaje: `el usuario o la contraseña son incorrectos` });
-        
+    } 
+    else if (logedin>-1 && (userModule.logedUsers.filter(userid => userid == logedin).length>0))
+    {
+        res.status(200).send({ resultado: true, mensaje: `el usuario id: ${logedin} ya se encuentra logueado` });
+    }
+    else {
+        res.status(404).send({ resultado: false, mensaje: `el usuario o la contraseña son incorrectos` });  
     }
 }
+
 function logout(req, res, next) {
-    let id = req.body.userId;
+    let id = req.query.userid;
     loguedIndex=-1;
     userModule.logedUsers.forEach(function(userId, index){
         if (userId == id)
@@ -49,7 +54,7 @@ function logout(req, res, next) {
 }
 
 function isLogged(req, res, next){
-    if (userModule.isLogged(req.params.id))
+    if (userModule.isLogged(req.query.userid))
     {
         next();
     }
@@ -59,7 +64,7 @@ function isLogged(req, res, next){
 }
 
 function isAdmin(req,res,next){
-    if (userModule.isAdmin(req.params.id))
+    if (userModule.isAdmin(req.query.userid))
     {
         next();
     }
