@@ -175,9 +175,23 @@ function findIdOrderByNumber(orderNumber)
 function addProductToOrder(orderNumber, idProductToAdd){
     let added = false;
     let orderIndex = findIdOrderByNumber(orderNumber);
-    console.log(`el indice de la onrden es: ${orderIndex}`)
-    orders[orderIndex].getProductList().push(idProductToAdd);
+    if(orderIndex >-1){
+        orders[orderIndex].getProductList().push(idProductToAdd);
+        added = true;
+    }
+    
     return added;
+}
+function remProductToOrder(orderNumber, productIndexToRem){
+    let removed = false;
+    let orderIndex = findIdOrderByNumber(orderNumber);
+    if(orderIndex >-1 && productIndexToRem >-1 && productIndexToRem < orders[orderIndex].getProductList().length)
+    {
+        orders[orderIndex].getProductList().splice(productIndexToRem,1);
+        removed = true;
+    }
+    
+    return removed;
 }
 
 function modifyOrder(userId, paymentCode, delivery, address){
@@ -246,4 +260,4 @@ function changeState(orderNumber, state){
     return changed;
 }
 
-module.exports={Order, orders, statusList, createOrder, calcPrice,listActiveOrders, deleteOrder, getOpenOrder, findIdOrderByNumber, addProductToOrder, modifyOrder,listUserOrders, changeState,closeOrder}
+module.exports={Order, orders, statusList, createOrder, calcPrice,listActiveOrders, deleteOrder, getOpenOrder, findIdOrderByNumber, addProductToOrder, modifyOrder,listUserOrders, changeState,closeOrder, remProductToOrder}

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userModule = require('../models/user')
 const orderModule = require ('../models/order');
-const {isExists, login, isLogged, logout, deleteUser,modifyUser, createUser, isAdmin, addProduct} = require('../middlewares/users')
+const {isExists, login, isLogged, logout, deleteUser,modifyUser, createUser, isAdmin, addProduct,  remProduct} = require('../middlewares/users')
 const {modifyOrder,createOrder, closeOrder} = require('../middlewares/orders')
 router.use(express.json())
 
@@ -119,9 +119,7 @@ router.post('/signup', isExists, createUser, function (req, res){
 })
 //#endregion
 
-router.delete('/:id', deleteUser, function (req, res){
-  res.json({"Mensaje":"Usuario Eliminado"})
-})
+
 
 //#region /users/login
 /**
@@ -192,12 +190,13 @@ router.post('/logout', logout, function (req, res){
 
 
 
-router.post('/addprodcut/', isLogged, addProduct, function(req, res){
+router.post('/order/prodcut/', isLogged, addProduct, function(req, res){
   res.json({"Mensaje":"Producto añadido"})
 })
-/*router.del('/remprodcut/', isLogged, addProduct, function(req, res){
-  res.json({"Mensaje":"Producto añadido"})
-})*/
+
+router.delete('/order/prodcut/', isLogged,  remProduct, function(req, res){
+  res.json({"Mensaje":"Producto eliminado"})
+})
 
 router.post('/order/', isLogged, createOrder, function(req, res){
   res.json({"Mensaje":"Nueva orden creada, estado actual: Pendiente"})
@@ -215,6 +214,9 @@ router.put('/closeorder/', isLogged, closeOrder, function(req, res){
 
 router.put('/:id', isLogged, modifyUser, function (req, res){
   res.json(userModule.listActiveUsers());
+})
+router.delete('/:id', deleteUser, function (req, res){
+  res.json({"Mensaje":"Usuario Eliminado"})
 })
 
 //#region /users/list

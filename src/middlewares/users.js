@@ -101,24 +101,35 @@ function addProduct(req, res, next){
     if(orderModule.getOpenOrder(userId).length > 0)
     {
         orderNumber = orderModule.getOpenOrder(userId)[0].getNumber();
-        orderModule.addProductToOrder(orderNumber, req.body.productid);
-        next();
-    }
-    else{
-        res.status(404).send({ resultado: false, mensaje: `No se pudo agregar el producto a la orden, debe existir una orden en estado pendiente` });
-    }
-}
-function addProduct(req, res, next){
-    let userId = req.query.userid;
-    if(orderModule.getOpenOrder(userId).length > 0)
-    {
-        orderNumber = orderModule.getOpenOrder(userId)[0].getNumber();
-        orderModule.addProductToOrder(orderNumber, req.body.productid);
-        next();
+        if(orderModule.addProductToOrder(orderNumber, req.body.productid)){
+            next();
+        }
+        else{
+            res.status(404).send({ resultado: false, mensaje: `el numero de orden no existe` });
+        }
+        
     }
     else{
         res.status(404).send({ resultado: false, mensaje: `No se pudo agregar el producto a la orden, debe existir una orden en estado pendiente` });
     }
 }
 
-module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser,createUser, isAdmin, addProduct}
+function remProduct(req, res, next){
+    let userId = req.query.userid;
+    if(orderModule.getOpenOrder(userId).length > 0)
+    {
+        orderNumber = orderModule.getOpenOrder(userId)[0].getNumber();
+        if(orderModule.remProductToOrder(orderNumber, req.body.prodindex)){
+            next();
+        }
+        else{
+            res.status(404).send({ resultado: false, mensaje: `no existe el producto que desea remover de la lista o el numero de orden no existe` });
+        }
+        
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `No se pudo agregar el producto a la orden, debe existir una orden en estado pendiente` });
+    }
+}
+
+module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser,createUser, isAdmin, addProduct, remProduct}
