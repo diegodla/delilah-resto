@@ -3,7 +3,7 @@ const router = express.Router();
 const userModule = require('../models/user')
 const orderModule = require ('../models/order');
 const {isExists, login, isLogged, logout, deleteUser,modifyUser, createUser, isAdmin, addProduct} = require('../middlewares/users')
-const {modifyOrder,createOrder} = require('../middlewares/orders')
+const {modifyOrder,createOrder, closeOrder} = require('../middlewares/orders')
 router.use(express.json())
 
 
@@ -190,20 +190,31 @@ router.post('/logout', logout, function (req, res){
 })
 //#endregion
 
-router.put('/:id', isLogged, modifyUser, function (req, res){
-  res.json(userModule.listActiveUsers());
-})
+
 
 router.post('/addprodcut/', isLogged, addProduct, function(req, res){
   res.json({"Mensaje":"Producto añadido"})
 })
+/*router.del('/remprodcut/', isLogged, addProduct, function(req, res){
+  res.json({"Mensaje":"Producto añadido"})
+})*/
 
 router.post('/order/', isLogged, createOrder, function(req, res){
   res.json({"Mensaje":"Nueva orden creada, estado actual: Pendiente"})
 })
 
 router.put('/order/', isLogged, modifyOrder, function(req, res){
+  
   res.json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Pendiente"})
+})
+
+router.put('/closeorder/', isLogged, closeOrder, function(req, res){
+  
+  res.json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Confirmada"})
+})
+
+router.put('/:id', isLogged, modifyUser, function (req, res){
+  res.json(userModule.listActiveUsers());
 })
 
 //#region /users/list

@@ -194,7 +194,7 @@ function modifyOrder(userId, paymentCode, delivery, address){
     }
     if(userExist && paymentMModule.findPaymentCode(paymentCode) && openOrder)
     {
-        let orderid = findIdOrderByNumber(orderModule.getOpenOrder(userId)[0].getNumber());
+        let orderid = findIdOrderByNumber(getOpenOrder(userId)[0].getNumber());
         orders[orderid].setPayMethod(paymentCode);
         orders[orderid].setDelivery(delivery);
         orders[orderid].setAddress(address);
@@ -205,6 +205,32 @@ function modifyOrder(userId, paymentCode, delivery, address){
         console.log("La orden indicada no se puede modificar");
     }
     return modified;
+
+}
+function closeOrder(userId){
+    let closed = false;
+    let userExist = userModule.findUser(userId);
+    let openOrder = getOpenOrder(userId)[0];
+    if(userExist && openOrder)
+    {
+        let orderid = findIdOrderByNumber(getOpenOrder(userId)[0].getNumber());
+        let productCount = -1;
+        productCount = orders[orderid].getProductList().length
+        if(productCount>0)
+        {
+            orders[orderid].setStatus(statusList[1]);
+            closed = true;
+            console.log("Orden cerrada");
+        }
+        else{
+            console.log("La orden no tiene productos cargados, no se puede cerrar");
+        }
+        
+    }
+    else{
+        console.log("La orden indicada no se pudo cerrar");
+    }
+    return closed;
 
 }
 
@@ -220,4 +246,4 @@ function changeState(orderNumber, state){
     return changed;
 }
 
-module.exports={Order, orders, statusList, createOrder, calcPrice,listActiveOrders, deleteOrder, getOpenOrder, findIdOrderByNumber, addProductToOrder, modifyOrder,listUserOrders, changeState}
+module.exports={Order, orders, statusList, createOrder, calcPrice,listActiveOrders, deleteOrder, getOpenOrder, findIdOrderByNumber, addProductToOrder, modifyOrder,listUserOrders, changeState,closeOrder}

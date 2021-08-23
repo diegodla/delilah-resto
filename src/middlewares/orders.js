@@ -24,12 +24,23 @@ function deleteOrder(req, res, next){
     }
 }
 function modifyOrder(req, res, next){
+    
     if (orderModule.modifyOrder(req.query.userid, req.body.paymentCode, req.body.delivery, req.body.address))
     {
         next();
     }
     else{
         res.status(404).send({ resultado: false, mensaje: `No se pudo modificar la orden` });
+    }
+}
+function closeOrder(req, res, next){
+    
+    if (orderModule.closeOrder(req.query.userid))
+    {
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `No se pudo cerrar la orden, debe tener una orden pendiente con productos seleccionados` });
     }
 }
 
@@ -43,4 +54,4 @@ function changeState(req, res, next){
         res.status(404).send({ resultado: false, mensaje: `No se pudo modificar la orden` });
     }
 }
-module.exports = {createOrder, deleteOrder, modifyOrder,changeState}
+module.exports = {createOrder, deleteOrder, modifyOrder,changeState,closeOrder}
