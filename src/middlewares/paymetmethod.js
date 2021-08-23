@@ -22,7 +22,6 @@ function modifyPaymentM(req, res, next){
 }
 
 function deletePaymentM(req, res, next){
-    console.log("Llegamos?")
     if (paymentMModule.deletePaymentM(req.params.id))
     {
         next();

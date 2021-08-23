@@ -10,7 +10,7 @@ function createProduct(req, res, next) {
 }
 
 function modifyProduct(req, res, next){
-    let productId = req.params.id;
+    let productId = req.params.productid;
     let {name, description, price} = req.body;
     if (productModule.modifyProduct(productId, name, description, price))
     {
@@ -22,7 +22,7 @@ function modifyProduct(req, res, next){
 }
 
 function deleteProduct(req, res, next){
-    if (productModule.deleteProduct(req.params.id))
+    if (productModule.deleteProduct(req.params.productid))
     {
         next();
     }

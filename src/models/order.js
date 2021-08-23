@@ -6,7 +6,7 @@ const { json } = require('express');
 
 class Order {
     constructor(number, userId, paymethod,  address, delivery){
-        this.nuermo = number;
+        this.number = number;
         this.userId = userId;
         this.productList = [];
         this.status = statusList[0];
@@ -65,24 +65,13 @@ function createOrder(userId, paymentCode, delivery, address){
         let newOrder = new Order(orders.length, userId, paymentCode, deliveryAddress, delivery);
         orders.push(newOrder);
         created = true;
-        console.log("//////////////Orden Cargada////////////////");
+        console.log("Orden Cargada");
     }
     else{
-        console.log("//////////////La orden No fue cargada////////////////");
+        console.log("La orden no fue cargada");
     }
     return created;
 }
-
-/*PROXIMO A BORRAR
-function findMaxNumber(orders){
-    let maxNumber = -1;
-    orders.forEach( function (order){
-        if(maxNumber<order.getNumber()){
-            maxNumber = order.getNumber();
-        }
-    });
-    return maxNumber+1;
-}*/
 
 function calcPrice(productList){
     let totalPrice = 0;
@@ -92,9 +81,66 @@ function calcPrice(productList){
     return totalPrice;
 }
 
+ 
 function listActiveOrders(){
-    let activeOrders= orders.filter(order => order.getIsDeleted() == false)
-    return activeOrders;
+    let activeOrders = orders.filter(order => order.getIsDeleted() == false)
+    let activeordersFormated = [];
+    activeOrders.forEach(function(order){
+        let p = []
+        order.getProductList().forEach(function(productid){
+            np = {
+                "name": productModule.products[productid].getName(),
+                "description": productModule.products[productid].getDescription(),
+                "price":productModule.products[productid].getPrice(),
+                "isDeleted":productModule.products[productid].getIsDeleted()}
+            p.push(np);
+        })
+        
+        let o = {
+            "number":order.getNumber(),
+            "userId":order.getUserId(),
+            "status":order.getStatus(),
+            "paymethod":order.getUserId(),
+            "address":order.getAddress(),
+            "delivery":order.getDelivery(),
+            "date":order.getDate(),
+            "productList": p
+        }
+        activeordersFormated.push(o);
+    })
+    return activeordersFormated;
+}
+
+function listUserOrders(userid){
+    let userOrders= orders.filter(order => order.getUserId() == userid)
+    let userOrdersFormated = [];
+    userOrders.forEach(function(order){
+        let p = []
+        order.getProductList().forEach(function(productid){
+            np = {
+                "name": productModule.products[productid].getName(),
+                "description": productModule.products[productid].getDescription(),
+                "price":productModule.products[productid].getPrice(),
+                "isDeleted":productModule.products[productid].getIsDeleted()}
+            p.push(np);
+        })
+        
+        console.log(order.getProductList());
+        console.log(p);
+        
+        let o = {
+            "number":order.getNumber(),
+            "userId":order.getUserId(),
+            "status":order.getStatus(),
+            "paymethod":order.getUserId(),
+            "address":order.getAddress(),
+            "delivery":order.getDelivery(),
+            "date":order.getDate(),
+            "productList": p
+        }
+        userOrdersFormated.push(o);
+    })
+    return userOrdersFormated;
 }
 
 function deleteOrder(orderId){
@@ -122,16 +168,56 @@ function findIdOrderByNumber(orderNumber)
         if (thisorder.getNumber() == orderNumber){
             orderId = idArray;
         }
-    }) 
+    })
     return orderId;
 }
 
-function addProductToOrder(orderNumber, productToAdd){
+function addProductToOrder(orderNumber, idProductToAdd){
     let added = false;
     let orderIndex = findIdOrderByNumber(orderNumber);
-    orders[orderIndex].getProductList().push(productToAdd);
+    console.log(`el indice de la onrden es: ${orderIndex}`)
+    orders[orderIndex].getProductList().push(idProductToAdd);
     return added;
 }
 
+function modifyOrder(userId, paymentCode, delivery, address){
+    let modified = false;
+    let userExist = userModule.findUser(userId);
+    let deliveryAddress = "";
+    let openOrder = getOpenOrder(userId)[0];
+    if (address==="" || address === null || address === undefined)
+    {
+      deliveryAddress = userModule.findAddress(userId);
+    }
+    else{
+      deliveryAddress = address;
+    }
+    if(userExist && paymentMModule.findPaymentCode(paymentCode) && openOrder)
+    {
+        let orderid = findIdOrderByNumber(orderModule.getOpenOrder(userId)[0].getNumber());
+        orders[orderid].setPayMethod(paymentCode);
+        orders[orderid].setDelivery(delivery);
+        orders[orderid].setAddress(address);
+        modified = true;
+        console.log("Datos de la orden modificados");
+    }
+    else{
+        console.log("La orden indicada no se puede modificar");
+    }
+    return modified;
 
-module.exports={Order, orders, statusList, createOrder, calcPrice,listActiveOrders, deleteOrder, getOpenOrder, findIdOrderByNumber, addProductToOrder}
+}
+
+function changeState(orderNumber, state){
+    let changed = false;
+    if(state < statusList.length && state > -1 && findIdOrderByNumber(orderNumber) > -1 && findIdOrderByNumber(orderNumber) < orders.length){
+        orders[findIdOrderByNumber(orderNumber)].setStatus(statusList[state]);
+        changed = true;
+    }
+    else{
+        console.log("El estado de orden no existe, por favor veririfique la lista de estados y selecciones uno cocrecto")
+    }
+    return changed;
+}
+
+module.exports={Order, orders, statusList, createOrder, calcPrice,listActiveOrders, deleteOrder, getOpenOrder, findIdOrderByNumber, addProductToOrder, modifyOrder,listUserOrders, changeState}

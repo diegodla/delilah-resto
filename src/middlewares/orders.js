@@ -1,11 +1,16 @@
 const orderModule = require ('../models/order');
 
 function createOrder(req, res, next) {
-    let createConfirm = orderModule.createOrder(req.body.userId, req.body.paymentCode, req.body.delivery, req.body.address);
+    let createConfirm = false;
+    
+    if(orderModule.getOpenOrder(req.query.userid).length == 0)
+    {
+        createConfirm = orderModule.createOrder(req.query.userid, req.body.paymentCode, req.body.delivery, req.body.address);
+    }
     if (createConfirm) {  
         next();
     } else {
-        res.status(404).send({ resultado: false, mensaje: `el producto no fue creado` });
+        res.status(404).send({ resultado: false, mensaje: `No se pudo crear la nueva orden, verifique que no tenga ordenes abiertas` });
     }
 }
 
@@ -19,7 +24,7 @@ function deleteOrder(req, res, next){
     }
 }
 function modifyOrder(req, res, next){
-    if (orderModule.modifyOrder(req.params.idUser))
+    if (orderModule.modifyOrder(req.query.userid, req.body.paymentCode, req.body.delivery, req.body.address))
     {
         next();
     }
@@ -27,4 +32,15 @@ function modifyOrder(req, res, next){
         res.status(404).send({ resultado: false, mensaje: `No se pudo modificar la orden` });
     }
 }
-module.exports = {createOrder, deleteOrder, modifyOrder}
+
+function changeState(req, res, next){
+    
+    if (orderModule.changeState(req.params.ordernumber, req.body.state))
+    {
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `No se pudo modificar la orden` });
+    }
+}
+module.exports = {createOrder, deleteOrder, modifyOrder,changeState}

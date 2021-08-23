@@ -28,10 +28,10 @@ function createPaymentM(name, code){
         let newPaymentM = new PaymentMethod(name, code);
         paymentMethods.push(newPaymentM);
         created = true;
-        console.log("//////////////METODO DE PAGO CREADO////////////////");
+        console.log("Metodo de pago creado");
     }
     else{
-        console.log("//////////////EL METOOD DE PAGO NO FUE CREADO////////////////");
+        console.log("Tuvimos un problema al crear el nuevo metodo de pago");
     }
     return created;
 }
@@ -61,13 +61,11 @@ function modifyPaymentM(paymentMId,name, code){
 
 function deletePaymentM(paymentId){
     let deleted = false;
-    console.log(deleted);
     if (paymentId>-1 && paymentId < paymentMethods.length && paymentMethods[paymentId].getIsDeleted() == false)
     {
         paymentMethods[paymentId].setIsDeleted(true);
         deleted = true;
     }
-    console.log(deleted);
     return deleted;
 }
 

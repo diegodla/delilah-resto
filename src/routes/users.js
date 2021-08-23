@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const userModule = require('../models/user')
-const {isExists, login, isLogged, logout, deleteUser,modifyUser, createUser, isAdmin} = require('../middlewares/users')
-const {modifyOrder} = require('../middlewares/orders')
+const orderModule = require ('../models/order');
+const {isExists, login, isLogged, logout, deleteUser,modifyUser, createUser, isAdmin, addProduct} = require('../middlewares/users')
+const {modifyOrder,createOrder} = require('../middlewares/orders')
 router.use(express.json())
 
 
@@ -11,11 +12,12 @@ router.get('/', function (req, res){
   res.json(userModule.listActiveUsers());
 })
 
+//#region /users/list
 /**
  * @swagger
  * /users/list:
  *  get:
- *    tags: [users]
+ *    tags: [Users]
  *    summary: Recupera la información de un usuario  según su ID
  *    description: Listado de todos lo susuarios.
  *    parameters:
@@ -35,13 +37,14 @@ router.get('/', function (req, res){
 router.get('/list', isLogged, isAdmin, function (req, res){
   res.json(userModule.listActiveUsers());
 })
+//#endregion
 
-
+//#region /users/signup
 /**
  * @swagger
  * /users/signup:
  *  post:
- *    tags: [users]
+ *    tags: [Users]
  *    summary: usuarios.
  *    description : Registro de usuarios.
  *    consumes:
@@ -114,16 +117,18 @@ router.get('/list', isLogged, isAdmin, function (req, res){
 router.post('/signup', isExists, createUser, function (req, res){
   res.json({"Mensaje":"Usuario Creado"})
 })
+//#endregion
 
 router.delete('/:id', deleteUser, function (req, res){
   res.json({"Mensaje":"Usuario Eliminado"})
 })
 
+//#region /users/login
 /**
  * @swagger
  * /users/login:
  *  post:
- *    tags: [users]
+ *    tags: [Users]
  *    summary: Login de usuario.
  *    description : Login de usuario.
  *    consumes:
@@ -152,17 +157,17 @@ router.delete('/:id', deleteUser, function (req, res){
  *       description: Usuario no encontrado (email/usuario y/o contraseña incorrecta)
  */
 router.post('/login', login, function (req, res){
-  console.log("USUARIOS LOGUEADOS");
-  console.log(userModule.logedUsers)
+  console.log(`Usuarios Logueados actualmente: ${userModule.logedUsers}`)
   res.json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
 })
+//#endregion
 
-
+//#region /users/logout
 /**
  * @swagger
  * /users/logout:
  *  post:
- *    tags: [users]
+ *    tags: [Users]
  *    summary: Logout
  *    description: Desloguea el id indicado
  *    parameters:
@@ -180,19 +185,78 @@ router.post('/login', login, function (req, res){
  *        description: No se pudo realizar el Logout.  
 */
 router.post('/logout', logout, function (req, res){
-  //borrar Console Log
-  console.log("USUARIOS LOGUEADOS");
-  console.log(userModule.logedUsers)
-  //Borrar Console Log
+  console.log(`Usuarios Logueados actualmente ${userModule.logedUsers}`)
   res.json({"Mensaje":"Logout realizado"})
 })
+//#endregion
 
 router.put('/:id', isLogged, modifyUser, function (req, res){
   res.json(userModule.listActiveUsers());
 })
 
-router.put('/:idUser/order', modifyOrder, function(req, res){
-  res.json({"Mensaje":"Orden Actual Modificada"})
+router.post('/addprodcut/', isLogged, addProduct, function(req, res){
+  res.json({"Mensaje":"Producto añadido"})
 })
+
+router.post('/order/', isLogged, createOrder, function(req, res){
+  res.json({"Mensaje":"Nueva orden creada, estado actual: Pendiente"})
+})
+
+router.put('/order/', isLogged, modifyOrder, function(req, res){
+  res.json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Pendiente"})
+})
+
+//#region /users/list
+/**
+ * @swagger
+ * /users/orders:
+ *  get:
+ *    tags: [Users]
+ *    summary: Recupera pedidos por id usuario
+ *    description: Recupera el historial de pedidos realizados por el usuario
+ *    parameters:
+ *       - in: query
+ *         name: userid
+ *         required: true
+ *         description: ID del usuario que desea ver la lista.
+ *         schema:
+ *           type: integer
+ *           example: 4
+ *    responses:
+ *       200:
+ *        description: Listado ok.
+ *       404:
+ *        description: El usuario no esta logueado. 
+*/
+router.get('/orders/',isLogged, function (req, res){
+  let userOrders = orderModule.listUserOrders(req.query.userid);
+  if(userOrders.length > 0)
+  {
+    res.json(userOrders);
+
+  }
+  else{
+    res.json({"Mensaje":"No hay ordenes para mostrar"})
+  }
+  
+})
+//#endregion
+
+router.get('/allorders/',isLogged, isAdmin, function (req, res){
+  let userOrders = orderModule.listActiveOrders();
+  if(userOrders.length > 0)
+  {
+    res.json(userOrders);
+
+  }
+  else{
+    res.json({"Mensaje":"No hay ordenes para mostrar"})
+  }
+  
+})
+
+
+
+
 
 module.exports = router;

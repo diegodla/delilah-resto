@@ -1,4 +1,5 @@
 const userModule = require('../models/user');
+const orderModule = require('../models/order');
 
 function createUser(req, res, next){
     let b = req.body;
@@ -59,7 +60,7 @@ function isLogged(req, res, next){
         next();
     }
     else{
-        res.status(404).send({ resultado: false, mensaje: `el usuariono no esta logueado` });
+        res.status(404).send({ resultado: false, mensaje: `debes estar logueado para poder ver nuestros productos` });
     }
 }
 
@@ -94,4 +95,18 @@ function modifyUser(req, res, next){
         res.status(404).send({ resultado: false, mensaje: `No se pudo modificar el usuario` });
     }
 }
-module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser,createUser, isAdmin}
+
+function addProduct(req, res, next){
+    let userId = req.query.userid;
+    if(orderModule.getOpenOrder(userId).length > 0)
+    {
+        orderNumber = orderModule.getOpenOrder(userId)[0].getNumber();
+        orderModule.addProductToOrder(orderNumber, req.body.productid);
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `No se pudo agregar el producto a la orden, debe existir una orden en estado pendiente` });
+    }
+}
+
+module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser,createUser, isAdmin, addProduct}

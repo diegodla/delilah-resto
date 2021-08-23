@@ -94,7 +94,7 @@ function createUser(user, pass, pass2, phone, name, surname, email, dni,  addres
         created = true;
     }
     else{
-        console.log("NO CUMPLISTE ALGUNA CONDICION");
+        console.log("NO SE CUMPLIO ALGUNA CONDICION");
         console.log("ID:"+id);
         console.log("Conincidencia en password:"+textCompare(pass,pass2));
         console.log("Campos obligatorios llenos:"+camposObligatorios);

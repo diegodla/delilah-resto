@@ -1,17 +1,18 @@
 const express = require('express')
 const router = express.Router()
 const paymentMModule = require ('../models/paymentmethod')
+const {isLogged, isAdmin} = require('../middlewares/users')
 const {createPaymentM, modifyPaymentM, deletePaymentM} = require('../middlewares/paymetmethod')
 router.use(express.json())
 
 
 
-
+//#region GET/paymentmethods
 /**
  * @swagger
  * /paymentmethods:
  *  get:
- *    tags: [metodos de pago]
+ *    tags: [Payment methods]
  *    summary: paymentmethod
  *    description: Listado de metodos de pago
  *    tag: metodosdepago
@@ -19,15 +20,17 @@ router.use(express.json())
  *       200:
  *         description: Listado de usuarios
  */
-router.get('/', function(req, res){
+router.get('/', isLogged, isAdmin, function(req, res){
   res.json(paymentMModule.listActivePaymentM())
 })
+//#endregion 
 
+//#region POST/paymentmethods
 /**
  * @swagger
  * /paymentmethods:
  *  post:
- *    tags: [metodos de pago]
+ *    tags: [Payment methods]
  *    summary: Agregar metodo de pago.
  *    description : Se crea nuevo metodo de pago.
  *    consumes:
@@ -56,11 +59,12 @@ router.get('/', function(req, res){
  *      404:
  *       description: el metodo de pago no fue creado
  */
-router.post('/', createPaymentM, function(req, res){
+router.post('/', isLogged, isAdmin, createPaymentM, function(req, res){
     res.json({"Mensaje":"metodo de pago creado"})
 })
+//#endregion
 
-router.put('/:id', modifyPaymentM, function(req, res){
+router.put('/:id',isLogged, isAdmin, modifyPaymentM, function(req, res){
     res.json({"Mensaje":"metodo de pago modificado"})
 })
 

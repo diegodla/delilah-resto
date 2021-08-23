@@ -37,10 +37,10 @@ function createProduct(name, description, price){
         let newProduct = new Product(name, description, price, false);
         products.push(newProduct);
         createConfirm = true;
-        console.log("//////////////PRODUCTO CREADO////////////////");
+        console.log("Producto Creado");
     }
     else{
-        console.log("//////////////EL PRODUCTO NO FUE CREADO////////////////");
+        console.log("Tuvimos un problema al cread el producto");
         console.log("Alguno de los campos esta vacio o es erroneo");
         console.log("El precio es un numero:"+!isNaN(price));
         console.log("El nombre es unico:"+!findProductName(name));
@@ -62,19 +62,18 @@ function findProductName(name){
 
 function modifyProduct(productId, name, description, price){
     let modified = false;
-    if (!findProductName(name) && !isNaN(price) && productId>-1 && productId< products.length){
+    if (!findProductName(name) && !isNaN(price) && productId >-1 && productId< products.length){
         products[productId].setName(name);
         products[productId].setDescription(description);
         products[productId].setPrice(price);
         modified=true;
     }
     else{
-        console.log("//////////////EL PRODUCTO NO FUE MODIFICADO////////////////");
-        console.log("Alguno de los campos esta vacio o es erroneo");
-        console.log("El precio es un numero:"+!isNaN(price));
-        console.log("El nombre es unico:"+!findProductName(name));
+        console.log("El producto no fue modificado");
     }
-    return modified;      
+    console.log("modified: "+modified);
+    return modified; 
+
 }
 
 function deleteProduct(productId){
