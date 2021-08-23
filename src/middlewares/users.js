@@ -60,7 +60,7 @@ function isLogged(req, res, next){
         next();
     }
     else{
-        res.status(404).send({ resultado: false, mensaje: `debes estar logueado para poder ver nuestros productos` });
+        res.status(404).send({ resultado: false, mensaje: `debes estar logueado para poder ver la informacion que deseas` });
     }
 }
 

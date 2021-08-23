@@ -85,9 +85,11 @@ function calcPrice(productList){
 function listActiveOrders(){
     let activeOrders = orders.filter(order => order.getIsDeleted() == false)
     let activeordersFormated = [];
+    let totalPrice = 0;
     activeOrders.forEach(function(order){
         let p = []
         order.getProductList().forEach(function(productid){
+            totalPrice += productModule.products[productid].getPrice();
             np = {
                 "name": productModule.products[productid].getName(),
                 "description": productModule.products[productid].getDescription(),
@@ -104,6 +106,7 @@ function listActiveOrders(){
             "address":order.getAddress(),
             "delivery":order.getDelivery(),
             "date":order.getDate(),
+            "totalPrice":totalPrice,
             "productList": p
         }
         activeordersFormated.push(o);
@@ -114,9 +117,11 @@ function listActiveOrders(){
 function listUserOrders(userid){
     let userOrders= orders.filter(order => order.getUserId() == userid)
     let userOrdersFormated = [];
+    let totalPrice = 0;
     userOrders.forEach(function(order){
         let p = []
         order.getProductList().forEach(function(productid){
+            totalPrice += productModule.products[productid].getPrice();
             np = {
                 "name": productModule.products[productid].getName(),
                 "description": productModule.products[productid].getDescription(),
@@ -136,6 +141,7 @@ function listUserOrders(userid){
             "address":order.getAddress(),
             "delivery":order.getDelivery(),
             "date":order.getDate(),
+            "totalPrice":totalPrice,
             "productList": p
         }
         userOrdersFormated.push(o);
@@ -233,6 +239,7 @@ function closeOrder(userId){
         if(productCount>0)
         {
             orders[orderid].setStatus(statusList[1]);
+            orders[orderid].setDate(new Date());
             closed = true;
             console.log("Orden cerrada");
         }

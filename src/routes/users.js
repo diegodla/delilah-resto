@@ -8,18 +8,15 @@ router.use(express.json())
 
 
 
-router.get('/', function (req, res){
-  res.json(userModule.listActiveUsers());
-})
 
-//#region /users/list
+//#region GET/users/
 /**
  * @swagger
- * /users/list:
+ * /users/:
  *  get:
  *    tags: [Users]
- *    summary: Recupera la información de un usuario  según su ID
- *    description: Listado de todos lo susuarios.
+ *    summary: Listado de todos los usuarios
+ *    description: Recupera el listado completo de usuarios activos.
  *    parameters:
  *       - in: query
  *         name: userid
@@ -34,12 +31,12 @@ router.get('/', function (req, res){
  *       404:
  *        description: El usuario no esta logueado o no tiene permiso.  
 */
-router.get('/list', isLogged, isAdmin, function (req, res){
+router.get('/', isLogged, isAdmin, function (req, res){
   res.json(userModule.listActiveUsers());
 })
 //#endregion
 
-//#region /users/signup
+//#region POST/users/signup
 /**
  * @swagger
  * /users/signup:
@@ -119,9 +116,7 @@ router.post('/signup', isExists, createUser, function (req, res){
 })
 //#endregion
 
-
-
-//#region /users/login
+//#region POST/users/login
 /**
  * @swagger
  * /users/login:
@@ -160,7 +155,7 @@ router.post('/login', login, function (req, res){
 })
 //#endregion
 
-//#region /users/logout
+//#region POST/users/logout
 /**
  * @swagger
  * /users/logout:
@@ -187,7 +182,6 @@ router.post('/logout', logout, function (req, res){
   res.json({"Mensaje":"Logout realizado"})
 })
 //#endregion
-
 
 
 router.post('/order/prodcut/', isLogged, addProduct, function(req, res){
@@ -219,7 +213,7 @@ router.delete('/:id', deleteUser, function (req, res){
   res.json({"Mensaje":"Usuario Eliminado"})
 })
 
-//#region /users/list
+//#region /users/orders
 /**
  * @swagger
  * /users/orders:
