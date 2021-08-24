@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userModule = require('../models/user')
 const orderModule = require ('../models/order');
-const {isExists, login, isLogged, logout, deleteUser,modifyUser, createUser, isAdmin, addProduct,  remProduct} = require('../middlewares/users')
-const {modifyOrder,createOrder, closeOrder} = require('../middlewares/orders')
+const {isExists, login, isLogged, logout, deleteUser,modifyUser, createUser, isAdmin} = require('../middlewares/users')
 router.use(express.json())
 
 
@@ -42,8 +41,8 @@ router.get('/', isLogged, isAdmin, function (req, res){
  * /users/signup:
  *  post:
  *    tags: [Users]
- *    summary: usuarios.
- *    description : Registro de usuarios.
+ *    summary: Registro de usuarios.
+ *    description : Registro de usuarios: La persona debe completar los capmos requeridos correctamente para lograr registar un nuevo usuario.
  *    consumes:
  *      - application/json
  *    parameters:
@@ -123,7 +122,7 @@ router.post('/signup', isExists, createUser, function (req, res){
  *  post:
  *    tags: [Users]
  *    summary: Login de usuario.
- *    description : Login de usuario.
+ *    description : Login de usuario - El usuario debe ingresar nombre de usuario o email registrado, acompañado de la contraseña para poder ingresar al sistema.
  *    consumes:
  *      - application/json
  *    parameters:
@@ -162,7 +161,7 @@ router.post('/login', login, function (req, res){
  *  post:
  *    tags: [Users]
  *    summary: Logout
- *    description: Desloguea el id indicado
+ *    description: Desloguea el usuario
  *    parameters:
  *       - in: query
  *         name: userid
@@ -183,43 +182,208 @@ router.post('/logout', logout, function (req, res){
 })
 //#endregion
 
-
-router.post('/order/prodcut/', isLogged, addProduct, function(req, res){
-  res.json({"Mensaje":"Producto añadido"})
+//#region PUT /users/
+/**
+ * @swagger
+ * /users/:
+ *  put:
+ *    tags: [Users]
+ *    summary: Modificar Usuario.
+ *    description : Actualización de datos del usuario. Solo un usuario logueado puede modificar su informacion propia.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userid
+ *        required: true
+ *        description: id del usuario logueado.
+ *        schema:
+ *          type: integer
+ *          example: 4
+ *      - in: body
+ *        name: usuario
+ *        description: datos a modificar
+ *        schema:
+ *          type: object
+ *          required:
+ *            - password
+ *            - password2
+ *            - phone
+ *            - name
+ *            - surname
+ *            - email
+ *            - address
+ *            - country
+ *          properties:
+ *            password:
+ *              description: Contraseña del usuario
+ *              type: string
+ *              example: escaliburM
+ *            password2:
+ *              description: Contraseña redundante para comprobar que no hay error 
+ *              type: string
+ *              example: escaliburM
+ *            phone:
+ *              description: Telefono del usuario 
+ *              type: string
+ *              example: 7276262176
+ *            name:
+ *              description: Descripcion del producto 
+ *              type: string
+ *              example: Baker Street 221b
+ *            surname:
+ *              description: Descripcion del producto 
+ *              type: string
+ *              example: Baker Street 221b
+ *            email:
+ *              description: Email del usuario 
+ *              type: email
+ *              example: emiliano@ntvg.com
+ *            address:
+ *              description: Direccion del usuario 
+ *              type: string
+ *              example: Aeroposta Arg 561
+ *            country:
+ *              description: Pais del usuario 
+ *              type: string
+ *              example: Argentina
+ *    responses:
+ *      201:
+ *       description: Usuario actualizado
+ *      401:
+ *       description: Usuario no actualizado
+ *      
+ */
+router.put('/', isLogged, modifyUser, function (req, res){
+  res.json({"Mensaje":"Usuario Modificado"});
 })
+//#endregion
 
-router.delete('/order/prodcut/', isLogged,  remProduct, function(req, res){
-  res.json({"Mensaje":"Producto eliminado"})
-})
-
-router.post('/order/', isLogged, createOrder, function(req, res){
-  res.json({"Mensaje":"Nueva orden creada, estado actual: Pendiente"})
-})
-
-router.put('/order/', isLogged, modifyOrder, function(req, res){
-  
-  res.json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Pendiente"})
-})
-
-router.put('/closeorder/', isLogged, closeOrder, function(req, res){
-  
-  res.json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Confirmada"})
-})
-
-router.put('/:id', isLogged, modifyUser, function (req, res){
+//#region PUT /users/{userid}
+/**
+ * @swagger
+ * /users/{userid}:
+ *  put:
+ *    tags: [Users]
+ *    summary: Modificar Usuario.
+ *    description : Actualización de datos del usuario. Solo un administrador puede modificar a cualquier usuario.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userid
+ *        required: true
+ *        description: id del administrador logueado.
+ *        schema:
+ *          type: integer
+ *          example: 0
+ *      - in: path
+ *        name: userid
+ *        required: true
+ *        description: Id del usuario a actualizar.
+ *        schema:
+ *          type: string
+ *          example: 4
+ *      - in: body
+ *        name: usuario
+ *        description: datos a modificar
+ *        schema:
+ *          type: object
+ *          required:
+ *            - password
+ *            - password2
+ *            - phone
+ *            - name
+ *            - surname
+ *            - email
+ *            - address
+ *            - country
+ *          properties:
+ *            password:
+ *              description: Contraseña del usuario
+ *              type: string
+ *              example: escaliburM
+ *            password2:
+ *              description: Contraseña redundante para comprobar que no hay error 
+ *              type: string
+ *              example: escaliburM
+ *            phone:
+ *              description: Telefono del usuario 
+ *              type: string
+ *              example: 7276262176
+ *            name:
+ *              description: Descripcion del producto 
+ *              type: string
+ *              example: Diego
+ *            surname:
+ *              description: Descripcion del producto 
+ *              type: string
+ *              example: Lecuna
+ *            email:
+ *              description: Email del usuario 
+ *              type: email
+ *              example: diego@ntvg.com
+ *            address:
+ *              description: Direccion del usuario 
+ *              type: string
+ *              example: Aeroposta Arg 561
+ *            country:
+ *              description: Pais del usuario 
+ *              type: string
+ *              example: Argentina
+ *    responses:
+ *      201:
+ *       description: Usuario actualizado
+ *      401:
+ *       description: Usuario no actualizado
+ *      
+ */
+router.put('/:userid', isLogged, isAdmin, modifyUser, function (req, res){
   res.json(userModule.listActiveUsers());
 })
-router.delete('/:id', deleteUser, function (req, res){
+//#endregion
+
+//#region DELETE /users/{userid}
+/**
+ * @swagger
+ * /users/{userid}:
+ *  delete:
+ *    tags: [Users]
+ *    summary: Eliminar un usuario  según su ID
+ *    description: Elimina el usuario segun su Id. Solo el administrador puede realizar esta tarea.
+ *    parameters:
+ *       - in: query
+ *         name: userid
+ *         required: true
+ *         description: ID del admin logueado.
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *       - in: path
+ *         name: userid
+ *         required: true
+ *         description: ID del usuario a eliminar.
+ *         schema:
+ *           type: integer
+ *           example: 4
+ *    responses:
+ *       200:
+ *        description: usuario  eliminado correctamente.
+ *       404:
+ *        description: usuario  no encontrado.  
+ */
+router.delete('/:userid', isLogged, isAdmin, deleteUser, function (req, res){
   res.json({"Mensaje":"Usuario Eliminado"})
 })
+//#endregion
 
-//#region /users/orders
+//#region GET/users/orders
 /**
  * @swagger
  * /users/orders:
  *  get:
  *    tags: [Users]
- *    summary: Recupera pedidos por id usuario
+ *    summary: Recupera pedidos por del usuario logueado
  *    description: Recupera el historial de pedidos realizados por el usuario
  *    parameters:
  *       - in: query
@@ -249,18 +413,6 @@ router.get('/orders/',isLogged, function (req, res){
 })
 //#endregion
 
-router.get('/allorders/',isLogged, isAdmin, function (req, res){
-  let userOrders = orderModule.listActiveOrders();
-  if(userOrders.length > 0)
-  {
-    res.json(userOrders);
-
-  }
-  else{
-    res.json({"Mensaje":"No hay ordenes para mostrar"})
-  }
-  
-})
 
 
 

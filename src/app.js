@@ -7,6 +7,7 @@ const swaggerOptions = {
   swaggerDefinition: {
     info: {
       title: 'Delilah Resto',
+      description: 'API para gestionar las ordenes de productos realizadas por los usuarios registrados',
       version: '1.0.0'
     }
   },

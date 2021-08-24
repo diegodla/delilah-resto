@@ -102,7 +102,7 @@ function listActiveOrders(){
             "number":order.getNumber(),
             "userId":order.getUserId(),
             "status":order.getStatus(),
-            "paymethod":order.getUserId(),
+            "paymethod":paymentMModule.getPaymentName(order.getPayMethod()),
             "address":order.getAddress(),
             "delivery":order.getDelivery(),
             "date":order.getDate(),
@@ -130,14 +130,11 @@ function listUserOrders(userid){
             p.push(np);
         })
         
-        console.log(order.getProductList());
-        console.log(p);
-        
         let o = {
             "number":order.getNumber(),
             "userId":order.getUserId(),
             "status":order.getStatus(),
-            "paymethod":order.getUserId(),
+            "paymethod":paymentMModule.getPaymentName(order.getPayMethod()),
             "address":order.getAddress(),
             "delivery":order.getDelivery(),
             "date":order.getDate(),
@@ -215,6 +212,7 @@ function modifyOrder(userId, paymentCode, delivery, address){
     if(userExist && paymentMModule.findPaymentCode(paymentCode) && openOrder)
     {
         let orderid = findIdOrderByNumber(getOpenOrder(userId)[0].getNumber());
+        console.log(paymentCode);
         orders[orderid].setPayMethod(paymentCode);
         orders[orderid].setDelivery(delivery);
         orders[orderid].setAddress(address);

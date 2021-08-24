@@ -46,6 +46,16 @@ function findPaymentCode(code){
     return paymentMExist;
 }
 
+function getPaymentName(code){
+    let paymentName = "";
+    paymentMethods.forEach(function(paymentM){
+        if (paymentM.getCode()==code){
+            paymentName = paymentM.getName();
+        }
+    })
+    return paymentName;
+}
+
 function modifyPaymentM(paymentMId,name, code){
     let modified = false;
     if(!findPaymentCode(code)&& paymentMId>-1 && paymentMId< paymentMethods.length){
@@ -73,4 +83,4 @@ function listActivePaymentM(){
     let activePaymentM= paymentMethods.filter(paymentM => paymentM.getIsDeleted() == false)
     return activePaymentM;
 }
-module.exports={PaymentMethod,paymentMethods,createPaymentM,modifyPaymentM,findPaymentCode,deletePaymentM, listActivePaymentM}
+module.exports={PaymentMethod,paymentMethods,createPaymentM,modifyPaymentM,findPaymentCode,deletePaymentM, listActivePaymentM,getPaymentName}

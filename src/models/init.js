@@ -36,8 +36,8 @@ orderModule.orders[0].getProductList().push(0,0);
 
 orderModule.createOrder(3, "MP", true, "Calle diferente a la del usuario 123");
 orderModule.orders[1].getProductList().push(1,0,2);
-orderModule.orders[1].setStatus(1);
+orderModule.orders[1].setStatus(orderModule.statusList[1]);
 
 orderModule.createOrder(1, "TC",true);
 orderModule.orders[2].getProductList().push(2);
-orderModule.orders[2].setStatus(2);
+orderModule.orders[2].setStatus(orderModule.statusList[2]);

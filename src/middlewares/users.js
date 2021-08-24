@@ -75,7 +75,7 @@ function isAdmin(req,res,next){
 }
 
 function deleteUser(req, res, next){
-    if (userModule.deleteUser(req.params.id))
+    if (userModule.deleteUser(req.params.userid))
     {
         next();
     }
@@ -85,9 +85,20 @@ function deleteUser(req, res, next){
 }
 
 function modifyUser(req, res, next){
-    let userId = req.params.id;
+    let userId = req.params.userid;
     let {password, password2, phone,name, surname, email, address,country} = req.body;
-    if (userModule.modifyUser(userId, password,password2,phone,name,surname,email, address,country))
+    if (userModule.modifyUser(userId, password,password2,phone,name,surname,email,address,country))
+    {
+        next();
+    }
+    else{
+        res.status(404).send({ resultado: false, mensaje: `No se pudo modificar el usuario` });
+    }
+}
+function modifyUserA(req, res, next){
+    let userId = req.query.userid;
+    let {password, password2, phone,name, surname, email, address,country} = req.body;
+    if (userModule.modifyUser(userId, password,password2,phone,name,surname,email,address,country))
     {
         next();
     }
@@ -132,4 +143,4 @@ function remProduct(req, res, next){
     }
 }
 
-module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser,createUser, isAdmin, addProduct, remProduct}
+module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser, modifyUserA, createUser, isAdmin, addProduct, remProduct}

@@ -12,8 +12,8 @@ router.use(express.json())
  * @swagger
  * /paymentmethods:
  *  get:
- *    tags: [Payment methods]
- *    summary: paymentmethod
+ *    tags: [Payment Methods]
+ *    summary: Lista los metodos de pago
  *    description: Listado de metodos de pago
  *    tag: metodosdepago
  *    responses:
@@ -30,7 +30,7 @@ router.get('/', isLogged, isAdmin, function(req, res){
  * @swagger
  * /paymentmethods:
  *  post:
- *    tags: [Payment methods]
+ *    tags: [Payment Methods]
  *    summary: Agregar metodo de pago.
  *    description : Se crea nuevo metodo de pago.
  *    consumes:
