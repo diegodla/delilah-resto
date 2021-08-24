@@ -42,7 +42,7 @@ router.get('/', isLogged, isAdmin, function (req, res){
  *  post:
  *    tags: [Users]
  *    summary: Registro de usuarios.
- *    description : Registro de usuarios: La persona debe completar los capmos requeridos correctamente para lograr registar un nuevo usuario.
+ *    description : Registro de usuarios - La persona debe completar los capmos requeridos correctamente para lograr registar un nuevo usuario.
  *    consumes:
  *      - application/json
  *    parameters:
