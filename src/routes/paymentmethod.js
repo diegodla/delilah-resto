@@ -64,37 +64,46 @@ router.post('/', isLogged, isAdmin, createPaymentM, function(req, res){
 })
 //#endregion
 
-//#region PUT/paymentmethods/{id}
+//#region PUT/paymentmethods
 /**
  * @swagger
  * /paymentmethods/{id}:
- *  PUT:
+ *  put:
  *    tags: [Payment Methods]
  *    summary: Actualizar metodo de pago.
- *    description : Actualizar metodo de pago - Solo un administrador puede actualizar un metodo de pago.
+ *    description : Se actualiza el metodo de pago. Solo un administrador puede realizar esta tarea
  *    consumes:
  *      - application/json
  *    parameters:
- *      - in: query
- *        name: userid
- *        required: true
- *        description: id del admin logueado.
- *        schema:
- *          type: integer
- *          example: 0 
  *      - in: path
  *        name: id
  *        required: true
  *        description: Id del metodo de pago a actualizar.
  *        schema:
  *          type: integer
- *          example: 2
+ *          example: 4
+ *      - in: body
+ *        name: paymentmethod
+ *        description: nombre y codigo del metodo de pago
+ *        schema:
+ *          type: object
+ *          required:
+ *            - name
+ *            - code
+ *          properties:
+ *            name:
+ *              description: nombre del metodo de pago
+ *              type: string
+ *              example: Uala
+ *            code:
+ *              description: Codigo corto de referencia del metodo de pago
+ *              type: string
+ *              example: UL
  *    responses:
- *      201:
- *       description: Metodo de pago actualizado
- *      401:
- *       description: Metodo de pago no actualizado
- *      
+ *      200:
+ *       description: Metodo de pago actualizado 
+ *      404:
+ *       description: el metodo de pago no fue actualizado
  */
 router.put('/:id',isLogged, isAdmin, modifyPaymentM, function(req, res){
     res.json({"Mensaje":"metodo de pago modificado"})

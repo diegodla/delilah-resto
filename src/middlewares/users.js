@@ -127,10 +127,11 @@ function addProduct(req, res, next){
 
 function remProduct(req, res, next){
     let userId = req.query.userid;
+    console.log(req.params.index);
     if(orderModule.getOpenOrder(userId).length > 0)
     {
         orderNumber = orderModule.getOpenOrder(userId)[0].getNumber();
-        if(orderModule.remProductToOrder(orderNumber, req.body.prodindex)){
+        if(orderModule.remProductToOrder(orderNumber, req.params.index)){
             next();
         }
         else{

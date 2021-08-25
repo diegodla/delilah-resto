@@ -384,7 +384,7 @@ router.delete('/:id', isLogged, isAdmin, deleteUser, function (req, res){
  *  get:
  *    tags: [Users]
  *    summary: Recupera pedidos por del usuario logueado
- *    description: Recupera el historial de pedidos realizados por el usuario
+ *    description: Recupera el historial de pedidos realizados por el usuario logueado
  *    parameters:
  *       - in: query
  *         name: userid
