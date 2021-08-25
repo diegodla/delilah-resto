@@ -68,7 +68,39 @@ router.put('/:id',isLogged, isAdmin, modifyPaymentM, function(req, res){
     res.json({"Mensaje":"metodo de pago modificado"})
 })
 
-router.delete('/:id', deletePaymentM, function(req, res){
+//#region DELETE/products/
+/**
+ * @swagger
+ * /paymentmethods/{id}:
+ *  delete:
+ *    tags: [Payment Methods]
+ *    summary: Eliminar un metodo de pago.
+ *    description : Eliminar un metodo de pago - Solo un administrador puede eliminar un metodo de pago.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userid
+ *        required: true
+ *        description: id del admin logueado.
+ *        schema:
+ *          type: integer
+ *          example: 0 
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: Id del metodo de pago a eliminar.
+ *        schema:
+ *          type: integer
+ *          example: 2
+ *    responses:
+ *      201:
+ *       description: Metodo de pago eliminado
+ *      401:
+ *       description: Metodo de pago no eliminado
+ *      
+ */
+router.delete('/:id/', deletePaymentM, function(req, res){
     res.json({"Mensaje":"Metodo de pago eliminado"})
 })
 

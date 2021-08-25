@@ -1,13 +1,15 @@
 class Person {
-    constructor(name, surname, email, dni, phone, address, country){
+    constructor(name, surname, email, dni, phone, address, id){
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.dni = dni;
         this.phone = phone;
-        this.address=address;
-        this.country =country;  
+        this.address=address; 
     }
+    getId(){return this.id;}
+    
     getName(){return this.name;}
     setName(name){this.name=name;}
 
@@ -25,18 +27,17 @@ class Person {
 
     getAddress(){return this.address;}
     setAddress(address){this.address=address;}
-
-    getCountry(){return this.country;}
-    setCountry(country){this.country = country;}
 }
 class User extends Person {
-    constructor(userName, password, name, surname, email, dni, phone, address,country){
-        super (name, surname, email, dni, phone, address,country);
+    constructor(userName, password, name, surname, email, dni, phone, address, id){
+        super (name, surname, email, dni, phone, address, id);
         this.userName = userName;
         this.password = password;
         this.isAdmin = false;
         this.isDeleted = false;
+        
     }
+    
 
     getUserName(){return this.userName;}
     setUserName(userName){this.userName=userName;}
@@ -53,7 +54,10 @@ class User extends Person {
 
 let users = [];
 let logedUsers=[];
-
+function asignId(list){
+    id = list.length
+    return id;
+}
 function textCompare(texto1, texto2){
     let iguales = false;
     if (texto1 == texto2){
@@ -63,7 +67,6 @@ function textCompare(texto1, texto2){
 }
 
 function login(user, pass){
-    //En este caso los parametros son user, user ya que puede llegar directamente el usuario, pero tambien puede loguear por email.
     let id = -1;
     tempid = getUserId(user, user);
     if(tempid >-1 && users[tempid].getPassword() == pass)
@@ -73,12 +76,11 @@ function login(user, pass){
     return id;
 }
 
-function createUser(user, pass, pass2, phone, name, surname, email, dni,  address, country){
+function createUser(user, pass, pass2, phone, name, surname, email, dni,  address){
     //compruebo que los campos obligatorios esten con valores
     let created = false; 
     let camposObligatorios = true;
-    if(user==null || pass==null || pass2==null || name==null || surname==null || email==null || dni==null  || phone==null || address==null || country==null){
-    //if(!user || !pass || !pass2 || !name || !surname || !email || !dni  || !phone || !address || !country){
+    if(user==null || pass==null || pass2==null || name==null || surname==null || email==null || dni==null  || phone==null || address==null){
         camposObligatorios=false;
         console.log("Hay algun campo vacio, fijate");
     }
@@ -89,7 +91,7 @@ function createUser(user, pass, pass2, phone, name, surname, email, dni,  addres
     //Ademas compruebo que los campos no esten vacios
     if(id == -1 && textCompare(pass,pass2) && camposObligatorios)
     {  
-        let newUser = new User(user, pass, name, surname, email, dni, phone, address, country);
+        let newUser = new User(user, pass, name, surname, email, dni, phone, address, asignId(users));
         users.push(newUser);
         created = true;
     }
@@ -133,7 +135,7 @@ function deleteUser(userId){
     return deleted;
 }
 
-function modifyUser(userId, pass, pass2, phone,name, surname, email, address, country){
+function modifyUser(userId, pass, pass2, phone,name, surname, email, address){
     let isModified = false;
     if (textCompare(pass, pass2) && userId>-1 && userId < users.length){
         users[userId].setPassword(pass);
@@ -142,7 +144,6 @@ function modifyUser(userId, pass, pass2, phone,name, surname, email, address, co
         users[userId].setSurname(surname);
         users[userId].setEmail(email);
         users[userId].setAddress(address);
-        users[userId].setCountry(country);
         isModified=true;
     }      
     return isModified;

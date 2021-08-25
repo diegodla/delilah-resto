@@ -259,10 +259,10 @@ router.put('/', isLogged, modifyUser, function (req, res){
 })
 //#endregion
 
-//#region PUT /users/{userid}
+//#region PUT /users/{id}
 /**
  * @swagger
- * /users/{userid}:
+ * /users/{id}:
  *  put:
  *    tags: [Users]
  *    summary: Modificar Usuario.
@@ -278,11 +278,11 @@ router.put('/', isLogged, modifyUser, function (req, res){
  *          type: integer
  *          example: 0
  *      - in: path
- *        name: userid
+ *        name: id
  *        required: true
  *        description: Id del usuario a actualizar.
  *        schema:
- *          type: string
+ *          type: integer
  *          example: 4
  *      - in: body
  *        name: usuario
@@ -338,15 +338,15 @@ router.put('/', isLogged, modifyUser, function (req, res){
  *       description: Usuario no actualizado
  *      
  */
-router.put('/:userid', isLogged, isAdmin, modifyUser, function (req, res){
+router.put('/:id', isLogged, isAdmin, modifyUser, function (req, res){
   res.json(userModule.listActiveUsers());
 })
 //#endregion
 
-//#region DELETE /users/{userid}
+//#region DELETE /users/{id}
 /**
  * @swagger
- * /users/{userid}:
+ * /users/{id}:
  *  delete:
  *    tags: [Users]
  *    summary: Eliminar un usuario  según su ID
@@ -360,7 +360,7 @@ router.put('/:userid', isLogged, isAdmin, modifyUser, function (req, res){
  *           type: integer
  *           example: 0
  *       - in: path
- *         name: userid
+ *         name: id
  *         required: true
  *         description: ID del usuario a eliminar.
  *         schema:
@@ -372,7 +372,7 @@ router.put('/:userid', isLogged, isAdmin, modifyUser, function (req, res){
  *       404:
  *        description: usuario  no encontrado.  
  */
-router.delete('/:userid', isLogged, isAdmin, deleteUser, function (req, res){
+router.delete('/:id', isLogged, isAdmin, deleteUser, function (req, res){
   res.json({"Mensaje":"Usuario Eliminado"})
 })
 //#endregion

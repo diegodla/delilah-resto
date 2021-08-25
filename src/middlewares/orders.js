@@ -46,7 +46,7 @@ function closeOrder(req, res, next){
 
 function changeState(req, res, next){
     
-    if (orderModule.changeState(req.params.ordernumber, req.body.state))
+    if (orderModule.changeState(req.params.id, req.body.state))
     {
         next();
     }

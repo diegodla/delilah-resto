@@ -1,9 +1,13 @@
 class PaymentMethod {
-    constructor(name, code){
+    constructor(name, code, id){
+        this.id = id;
         this.name = name;
         this.code=code;
         this.isDeleted = false;
     }
+
+    getId(){return this.id;}
+    
     getName(){return this.name;}
     setName(name){this.name=name;}
 
@@ -15,6 +19,11 @@ class PaymentMethod {
 }
 let paymentMethods = [];
 
+function asignId(list){
+    id = list.length
+    return id;
+}
+
 function createPaymentM(name, code){
     let camposObligatorios = true;
     let created = false;
@@ -25,7 +34,7 @@ function createPaymentM(name, code){
 
     if(!findPaymentCode(code))
     {
-        let newPaymentM = new PaymentMethod(name, code);
+        let newPaymentM = new PaymentMethod(name, code, asignId(paymentMethods));
         paymentMethods.push(newPaymentM);
         created = true;
         console.log("Metodo de pago creado");
@@ -64,18 +73,21 @@ function modifyPaymentM(paymentMId,name, code){
         modified = true;
     }
     else{
-        console.log("//////////////EL METOOD DE PAGO NO FUE Modificado////////////////");
+        console.log("El metodo de pago no fue modificado");
     } 
     return modified;
 }
 
-function deletePaymentM(paymentId){
+function deletePaymentM(id){
     let deleted = false;
-    if (paymentId>-1 && paymentId < paymentMethods.length && paymentMethods[paymentId].getIsDeleted() == false)
+    paymentMethods.forEach(function (pm){
+    if (pm.getId() == id && pm.getIsDeleted() == false)
     {
-        paymentMethods[paymentId].setIsDeleted(true);
+        pm.setIsDeleted(true);
         deleted = true;
     }
+    });
+    
     return deleted;
 }
 

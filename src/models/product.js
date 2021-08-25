@@ -1,10 +1,12 @@
 class Product{
-    constructor(name, description, price){
+    constructor(name, description, price, id){
+        this.id = id; 
         this.name = name;
         this.description = description;
         this.price = price;
         this.isDeleted=false;
     }
+    getId(){return this.id;}
 
     getName(){return this.name;}
     setName(name){this.name=name;}
@@ -21,6 +23,10 @@ class Product{
 
 let products=[];
 
+function asignId(list){
+    id = list.length
+    return id;
+}
 
 function createProduct(name, description, price){
     //compruebo que los campos obligatorios esten con valores
@@ -34,7 +40,7 @@ function createProduct(name, description, price){
     //verifico que no exista el mismo nombre del producto antes de crearlo y que el precio sea numerico
     if(!findProductName(name) && !isNaN(price))
     {
-        let newProduct = new Product(name, description, price, false);
+        let newProduct = new Product(name, description, price, asignId(products));
         products.push(newProduct);
         createConfirm = true;
         console.log("Producto Creado");

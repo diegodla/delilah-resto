@@ -5,7 +5,8 @@ const { json } = require('express');
 
 
 class Order {
-    constructor(number, userId, paymethod,  address, delivery){
+    constructor(number, userId, paymethod,  address, delivery, id){
+        this.id = id;
         this.number = number;
         this.userId = userId;
         this.productList = [];
@@ -17,6 +18,7 @@ class Order {
         this.isDeleted = false;
         
     }
+    getId(){return this.id;}
 
     getNumber(){return this.number;}
     setNumber(number){this.number=number;}
@@ -49,6 +51,11 @@ class Order {
 let orders = [];
 let statusList = ["Pendiente","Confirmado","En preparacion", "Enviado", "Entregado", "Cancelado"];
 
+function asignId(list){
+    id = list.length
+    return id;
+}
+
 function createOrder(userId, paymentCode, delivery, address){
     let created = false;
     let userExist = userModule.findUser(userId);
@@ -62,7 +69,7 @@ function createOrder(userId, paymentCode, delivery, address){
      }
     if(userExist && paymentMModule.findPaymentCode(paymentCode))
     {
-        let newOrder = new Order(orders.length, userId, paymentCode, deliveryAddress, delivery);
+        let newOrder = new Order(orders.length, userId, paymentCode, deliveryAddress, delivery, asignId(orders));
         orders.push(newOrder);
         created = true;
         console.log("Orden Cargada");

@@ -5,13 +5,13 @@ const orderModule = require('./order')
 
 /* ********************************* USUARIOS ********************************* */
 
-let admin = new userModule.User("admin", "delicontrol", "admin", null, "admin@delilah-resto.com", null, "444000", "Perito Moreno 247", "Argentina");
+let admin = new userModule.User("admin", "delicontrol", "admin", null, "admin@delilah-resto.com", null, "444000", "Perito Moreno 247",0);
 admin.setIsAdmin(true);
 userModule.users.push(admin);
-userModule.createUser("adrielb", "adrielpass", "adrielpass", "154698987" ,"Adriel","Baez", "adriel@baez.com", "41234567", "Piedras 141","Argentina");
-userModule.createUser("derlism", "derlispass", "derlispass", "151233279" ,"Derlis","Martinez", "derlis@martinez.com","92014976", "Paso 551","Colombia");
-userModule.createUser("juliom", "juliopass", "juliopass", "158732487" ,"Julio Cesar","Marquez", "julio@marquez", "358569741", "Av. Cabildo 65","Argentina");
-userModule.createUser("diegol", "diegopass", "diegopass", "153278461" ,"Diego","Lecuna", "lecuna.diego@mail.com", "32473500", "9 de julio 1050","Argentina");
+userModule.createUser("adrielb", "adrielpass", "adrielpass", "154698987" ,"Adriel","Baez", "adriel@baez.com", "41234567", "Piedras 141");
+userModule.createUser("derlism", "derlispass", "derlispass", "151233279" ,"Derlis","Martinez", "derlis@martinez.com","92014976", "Paso 551");
+userModule.createUser("juliom", "juliopass", "juliopass", "158732487" ,"Julio Cesar","Marquez", "julio@marquez", "358569741", "Av. Cabildo 65");
+userModule.createUser("diegol", "diegopass", "diegopass", "153278461" ,"Diego","Lecuna", "lecuna.diego@mail.com", "32473500", "9 de julio 1050");
 
 /* ********************************* PRODUCTOS ********************************* */
 

@@ -177,16 +177,72 @@ router.get('/',isLogged, isAdmin, function (req, res){
   })
 //#endregion
 
-router.post('/', isLogged, createOrder, function(req, res){
-    res.json({"Mensaje":"Orden Creada"})
-})
-
-router.delete('/:id', deleteOrder, function(req, res){
-    res.json({"Mensaje":"Orden eliminada"})
-})
-
-router.put('/changeState/:ordernumber/', isLogged, isAdmin, changeState, function(req, res){
+//#region DELETE /orders/{id}
+/**
+ * @swagger
+ * /orders/{id}:
+ *  put:
+ *    tags: [Orders]
+ *    summary: Actualiza el estado de una orden segun su id
+ *    description:Actualiza el estado de una orden segun su Id. Solo el administrador puede realizar esta tarea.
+ *    parameters:
+ *       - in: query
+ *         name: userid
+ *         required: true
+ *         description: ID del admin logueado.
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la orden a actualizar.
+ *         schema:
+ *           type: integer
+ *           example: 2
+ *    responses:
+ *       200:
+ *        description: estado de orden actualizado correctamente.
+ *       404:
+ *        description: estado de orden no actualizado.  
+ */
+router.put('/changeState/:id/', isLogged, isAdmin, changeState, function(req, res){
     res.json({"Mensaje":"Orden Modificada"})
 })
+//#endregion
+
+//#region DELETE /orders/{id}
+/**
+ * @swagger
+ * /orders/{id}:
+ *  delete:
+ *    tags: [Orders]
+ *    summary: Eliminar una orden según su ID
+ *    description: Elimina una orden segun su Id. Solo el administrador puede realizar esta tarea.
+ *    parameters:
+ *       - in: query
+ *         name: userid
+ *         required: true
+ *         description: ID del admin logueado.
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la orden a eliminar.
+ *         schema:
+ *           type: integer
+ *           example: 2
+ *    responses:
+ *       200:
+ *        description: orden eliminada correctamente.
+ *       404:
+ *        description: orden no eliminada.  
+ */
+router.delete('/:id', deleteOrder, function(req, res){
+  res.json({"Mensaje":"Orden eliminada"})
+})
+//#endregion
 
 module.exports = router;

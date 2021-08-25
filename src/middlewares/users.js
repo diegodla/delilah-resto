@@ -75,7 +75,7 @@ function isAdmin(req,res,next){
 }
 
 function deleteUser(req, res, next){
-    if (userModule.deleteUser(req.params.userid))
+    if (userModule.deleteUser(req.params.id))
     {
         next();
     }

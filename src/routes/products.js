@@ -164,7 +164,7 @@ router.post('/', isLogged, isAdmin, createProduct, function(req, res){
 //#region PUT/products/
 /**
  * @swagger
- * /products/{productid}:
+ * /products/{id}:
  *  put:
  *    tags: [Products]
  *    summary: Actualizacion de productos.
@@ -180,7 +180,7 @@ router.post('/', isLogged, isAdmin, createProduct, function(req, res){
  *          type: integer
  *          example: 0 
  *      - in: path
- *        name: productid
+ *        name: id
  *        required: true
  *        description: Id del producto a actualizar.
  *        schema:
@@ -215,7 +215,7 @@ router.post('/', isLogged, isAdmin, createProduct, function(req, res){
  *       description: Producto no actualizado
  *      
  */
-router.put('/:productid/', isLogged, isAdmin, modifyProduct, function(req, res){
+router.put('/:id/', isLogged, isAdmin, modifyProduct, function(req, res){
   res.json({"Mensaje":"Producto Modificado"})
 })
 //#endregion
@@ -223,7 +223,7 @@ router.put('/:productid/', isLogged, isAdmin, modifyProduct, function(req, res){
 //#region DELETE/products/
 /**
  * @swagger
- * /products/{productid}:
+ * /products/{id}/:
  *  delete:
  *    tags: [Products]
  *    summary: Eliminar un producto.
@@ -239,7 +239,7 @@ router.put('/:productid/', isLogged, isAdmin, modifyProduct, function(req, res){
  *          type: integer
  *          example: 0 
  *      - in: path
- *        name: productid
+ *        name: id
  *        required: true
  *        description: Id del producto a eliminar.
  *        schema:
@@ -252,7 +252,7 @@ router.put('/:productid/', isLogged, isAdmin, modifyProduct, function(req, res){
  *       description: Producto no eliminado
  *      
  */
-router.delete('/:productid/', isLogged,isAdmin, deleteProduct, function(req, res){
+router.delete('/:id/', isLogged,isAdmin, deleteProduct, function(req, res){
   res.json({"Mensaje":"Producto eliminado"})
 })
 //#endregion
