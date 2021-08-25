@@ -64,9 +64,42 @@ router.post('/', isLogged, isAdmin, createPaymentM, function(req, res){
 })
 //#endregion
 
+//#region PUT/paymentmethods/{id}
+/**
+ * @swagger
+ * /paymentmethods/{id}:
+ *  PUT:
+ *    tags: [Payment Methods]
+ *    summary: Actualizar metodo de pago.
+ *    description : Actualizar metodo de pago - Solo un administrador puede actualizar un metodo de pago.
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userid
+ *        required: true
+ *        description: id del admin logueado.
+ *        schema:
+ *          type: integer
+ *          example: 0 
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: Id del metodo de pago a actualizar.
+ *        schema:
+ *          type: integer
+ *          example: 2
+ *    responses:
+ *      201:
+ *       description: Metodo de pago actualizado
+ *      401:
+ *       description: Metodo de pago no actualizado
+ *      
+ */
 router.put('/:id',isLogged, isAdmin, modifyPaymentM, function(req, res){
     res.json({"Mensaje":"metodo de pago modificado"})
 })
+//#endregion
 
 //#region DELETE/products/
 /**
@@ -103,5 +136,6 @@ router.put('/:id',isLogged, isAdmin, modifyPaymentM, function(req, res){
 router.delete('/:id/', deletePaymentM, function(req, res){
     res.json({"Mensaje":"Metodo de pago eliminado"})
 })
+//#endregion
 
 module.exports = router;
