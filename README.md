@@ -9,7 +9,7 @@ git clone https://github.com/diegodla/delilah-resto.git
 ## 2 - Instalación de dependencias. 
 Para instalar las dependencias utilizar el comando: npm install
 ## 4 - Inicio del servidor. 
-Posicionarse en la carpeta raiz del proyecto y ejecutar el comando npm run dev. A partir de este punto ya se puede ejecutar el sistema
+Posicionarse en la carpeta raiz del proyecto y ejecutar el comando npm start. A partir de este punto ya se puede ejecutar el sistema
 
 # Usuario Administrador.
 El sistema cuenta con un usuario administrador precargado. Los datos de inicio de sesion del mismo son los siguientes:<br>
