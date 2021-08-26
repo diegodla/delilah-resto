@@ -31,7 +31,7 @@ router.get('/',isLogged, isAdmin, function (req, res){
     let userOrders = orderModule.listActiveOrders();
     if(userOrders.length > 0)
     {
-      res.json(userOrders);
+      res.status(200).json(userOrders);
   
     }
     else{
@@ -89,7 +89,7 @@ router.get('/',isLogged, isAdmin, function (req, res){
  *      
  */
  router.post('/', isLogged, createOrder, function(req, res){
-    res.json({"Mensaje":"Nueva orden creada, estado actual: Pendiente"})
+    res.status(201).json({"Mensaje":"Nueva orden creada, estado actual: Pendiente"})
   })
   //#endregion
 
@@ -142,7 +142,7 @@ router.get('/',isLogged, isAdmin, function (req, res){
  */
  router.put('/', isLogged, modifyOrder, function(req, res){
   
-    res.json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Pendiente"})
+    res.status(201).json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Pendiente"})
   })
 //#endregion
 
@@ -173,10 +173,9 @@ router.get('/',isLogged, isAdmin, function (req, res){
  */
  router.put('/closeorder/', isLogged, closeOrder, function(req, res){
   
-    res.json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Confirmada"})
+    res.status(201).json({"Mensaje":"los datos de la orden se actualizaron, estado actual: Confirmada"})
   })
 //#endregion
-
 
 //#region POST/orders/product/:
 /**
@@ -203,11 +202,16 @@ router.get('/',isLogged, isAdmin, function (req, res){
  *          type: object
  *          required:
  *            - productid
+ *            - amount
  *          properties:
  *            productid:
  *              description: id del producto
  *              type: integer
  *              example: 1
+ *            amount:
+ *              description: cantidad del producto a agregar
+ *              type: integer
+ *              example: 2
  *    responses:
  *      201:
  *       description: Producto Agragado
@@ -216,44 +220,104 @@ router.get('/',isLogged, isAdmin, function (req, res){
  *      
  */
  router.post('/product/', isLogged, addProduct, function(req, res){
-  res.json({"Mensaje":"Producto añadido"})
+  res.status(201).json({"Mensaje":"Productos añadidos"})
 })
 //#endregion 
 
-//#region PUT /orders/{id}
+//#region PUT/orders/{id}
 /**
  * @swagger
- * /orders/{id}:
+ * /orders/changeState/{id}:
  *  put:
  *    tags: [Orders]
  *    summary: Actualiza el estado de una orden segun su id
- *    description:Actualiza el estado de una orden segun su Id. Solo el administrador puede realizar esta tarea.
+ *    description : Actualiza el estado de una orden segun su Id. Solo el administrador puede realizar esta tarea. 0-Pendiente, 1-Confirmado, 2-En preparacion, 3-Enviado, 4-Entregado, 5-Cancelado.
+ *    consumes:
+ *      - application/json
  *    parameters:
- *       - in: query
- *         name: userid
- *         required: true
- *         description: ID del admin logueado.
- *         schema:
- *           type: integer
- *           example: 0
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID de la orden a actualizar.
- *         schema:
- *           type: integer
- *           example: 2
+ *      - in: query
+ *        name: userid
+ *        required: true
+ *        description: id del usuario logueado.
+ *        schema:
+ *          type: integer
+ *          example: 0 
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: Id de la orden a actualizar.
+ *        schema:
+ *          type: integer
+ *          example: 2
+ *      - in: body
+ *        name: state
+ *        description: nuevo estado de orden
+ *        schema:
+ *          type: object
+ *          required:
+ *            - state
+ *          properties:
+ *            state:
+ *              description: estado de orden
+ *              type: integer
+ *              example: 3
  *    responses:
- *       200:
- *        description: estado de orden actualizado correctamente.
- *       404:
- *        description: estado de orden no actualizado.  
+ *      200:
+ *       description: estado de orden actualizado correctamente. 
+ *      404:
+ *       description: estado de orden no actualizado. 
  */
 router.put('/changeState/:id/', isLogged, isAdmin, changeState, function(req, res){
-    res.json({"Mensaje":"Orden Modificada"})
+    res.status(201).json({"Mensaje":"Orden Modificada"})
 })
 //#endregion
 
+//#region DELETE/orders/product/:
+/**
+ * @swagger
+ * /orders/product/:
+ *  delete:
+ *    tags: [Orders]
+ *    summary: Quitar Producto.
+ *    description: Quitar producto de la orden pendiente
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: query
+ *        name: userid
+ *        required: true
+ *        description: id del usuario logueado.
+ *        schema:
+ *          type: integer
+ *          example: 4 
+ *      - in: body
+ *        name: producto
+ *        description: datos del producto a quitar
+ *        schema:
+ *          type: object
+ *          required:
+ *            - productid
+ *            - amount
+ *          properties:
+ *            productid:
+ *              description: id del producto
+ *              type: integer
+ *              example: 1
+ *            amount:
+ *              description: cantidad del producto a quitar
+ *              type: integer
+ *              example: 1
+ *    responses:
+ *      200:
+ *       description: Producto fue removido de la lista
+ *      401:
+ *       description: Producto no removido
+ *      
+ */
+ router.delete('/product/', isLogged,  remProduct, function(req, res){
+  res.status(200).json({"Mensaje":"Producto eliminado"})
+})
+//#endregion
 
 //#region DELETE /orders/{id}
 /**
@@ -285,41 +349,7 @@ router.put('/changeState/:id/', isLogged, isAdmin, changeState, function(req, re
  *        description: orden no eliminada.  
  */
 router.delete('/:id', deleteOrder, function(req, res){
-  res.json({"Mensaje":"Orden eliminada"})
-})
-//#endregion
-
-//#region DELETE /orders/product/{index}
-/**
- * @swagger
- * /orders/product/{index}:
- *  delete:
- *    tags: [Orders]
- *    summary: Quitar Producto.
- *    description: Quitar producto de la orden pendiente
- *    parameters:
- *       - in: query
- *         name: userid
- *         required: true
- *         description: ID del admin logueado.
- *         schema:
- *           type: integer
- *           example: 4
- *       - in: path
- *         name: index
- *         required: true
- *         description: ID del producto a eliminar de la orden.
- *         schema:
- *           type: integer
- *           example: 0
- *    responses:
- *       200:
- *        description: Producto eliminado correctamente.
- *       404:
- *        description: orden no eliminado.  
- */
- router.delete('/product/:index/', isLogged,  remProduct, function(req, res){
-  res.json({"Mensaje":"Producto eliminado"})
+  res.status(200).json({"Mensaje":"Orden eliminada"})
 })
 //#endregion
 

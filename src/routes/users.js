@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userModule = require('../models/user')
 const orderModule = require ('../models/order');
-const {isExists, login, isLogged, logout, deleteUser,modifyUser, createUser, isAdmin} = require('../middlewares/users')
+const {isExists, login, isLogged, logout, deleteUser,modifyUser, modifyUserA, createUser, isAdmin} = require('../middlewares/users')
 router.use(express.json())
 
 
@@ -31,7 +31,7 @@ router.use(express.json())
  *        description: El usuario no esta logueado o no tiene permiso.  
 */
 router.get('/', isLogged, isAdmin, function (req, res){
-  res.json(userModule.listActiveUsers());
+  res.status(200).json(userModule.listActiveUsers());
 })
 //#endregion
 
@@ -42,7 +42,7 @@ router.get('/', isLogged, isAdmin, function (req, res){
  *  post:
  *    tags: [Users]
  *    summary: Registro de usuarios.
- *    description : Registro de usuarios - La persona debe completar los capmos requeridos correctamente para lograr registar un nuevo usuario.
+ *    description : Registro de usuarios - La persona debe completar los campos requeridos correctamente para lograr registar un nuevo usuario.
  *    consumes:
  *      - application/json
  *    parameters:
@@ -99,19 +99,15 @@ router.get('/', isLogged, isAdmin, function (req, res){
  *              description: Direccion del usuario
  *              type: string
  *              example: 742 Evergreen Terrace
- *            country:
- *              description: Pais del usuario
- *              type: string
- *              example: Argentina
  *    responses:
  *      201:
  *       description: Usuario registrado
- *      401:
+ *      404:
  *       description: Usuario no registrado
  *      
  */
 router.post('/signup', isExists, createUser, function (req, res){
-  res.json({"Mensaje":"Usuario Creado"})
+  res.status(201).json({"Mensaje":"Usuario Creado"})
 })
 //#endregion
 
@@ -145,12 +141,12 @@ router.post('/signup', isExists, createUser, function (req, res){
  *    responses:
  *      200:
  *       description: Login de usuario satisfactorio. 
- *      404:
+ *      401:
  *       description: Usuario no encontrado (email/usuario y/o contraseña incorrecta)
  */
 router.post('/login', login, function (req, res){
   console.log(`Usuarios Logueados actualmente: ${userModule.logedUsers}`)
-  res.json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
+  res.status(200).json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
 })
 //#endregion
 
@@ -178,7 +174,7 @@ router.post('/login', login, function (req, res){
 */
 router.post('/logout', logout, function (req, res){
   console.log(`Usuarios Logueados actualmente ${userModule.logedUsers}`)
-  res.json({"Mensaje":"Logout realizado"})
+  res.status(200).json({"Mensaje":"Logout realizado"})
 })
 //#endregion
 
@@ -213,7 +209,6 @@ router.post('/logout', logout, function (req, res){
  *            - surname
  *            - email
  *            - address
- *            - country
  *          properties:
  *            password:
  *              description: Contraseña del usuario
@@ -230,11 +225,11 @@ router.post('/logout', logout, function (req, res){
  *            name:
  *              description: Descripcion del producto 
  *              type: string
- *              example: Baker Street 221b
+ *              example: Alfredo
  *            surname:
  *              description: Descripcion del producto 
  *              type: string
- *              example: Baker Street 221b
+ *              example: Barria
  *            email:
  *              description: Email del usuario 
  *              type: email
@@ -243,19 +238,15 @@ router.post('/logout', logout, function (req, res){
  *              description: Direccion del usuario 
  *              type: string
  *              example: Aeroposta Arg 561
- *            country:
- *              description: Pais del usuario 
- *              type: string
- *              example: Argentina
  *    responses:
- *      201:
+ *      202:
  *       description: Usuario actualizado
  *      401:
  *       description: Usuario no actualizado
  *      
  */
 router.put('/', isLogged, modifyUser, function (req, res){
-  res.json({"Mensaje":"Usuario Modificado"});
+  res.status(200).json({"Mensaje":"Usuario Modificado"});
 })
 //#endregion
 
@@ -297,7 +288,6 @@ router.put('/', isLogged, modifyUser, function (req, res){
  *            - surname
  *            - email
  *            - address
- *            - country
  *          properties:
  *            password:
  *              description: Contraseña del usuario
@@ -327,19 +317,15 @@ router.put('/', isLogged, modifyUser, function (req, res){
  *              description: Direccion del usuario 
  *              type: string
  *              example: Aeroposta Arg 561
- *            country:
- *              description: Pais del usuario 
- *              type: string
- *              example: Argentina
  *    responses:
- *      201:
+ *      200:
  *       description: Usuario actualizado
  *      401:
  *       description: Usuario no actualizado
  *      
  */
-router.put('/:id', isLogged, isAdmin, modifyUser, function (req, res){
-  res.json(userModule.listActiveUsers());
+router.put('/:id', isLogged, isAdmin, modifyUserA, function (req, res){
+  res.status(200).json({"Mensaje":"Usuario Modificado"});
 })
 //#endregion
 
@@ -373,7 +359,7 @@ router.put('/:id', isLogged, isAdmin, modifyUser, function (req, res){
  *        description: usuario  no encontrado.  
  */
 router.delete('/:id', isLogged, isAdmin, deleteUser, function (req, res){
-  res.json({"Mensaje":"Usuario Eliminado"})
+  res.status(200).json({"Mensaje":"Usuario Eliminado"})
 })
 //#endregion
 
@@ -403,11 +389,11 @@ router.get('/orders/',isLogged, function (req, res){
   let userOrders = orderModule.listUserOrders(req.query.userid);
   if(userOrders.length > 0)
   {
-    res.json(userOrders);
+    res.status(200).json(userOrders);
 
   }
   else{
-    res.json({"Mensaje":"No hay ordenes para mostrar"})
+    res.status(404).json({"Mensaje":"No hay ordenes para mostrar"})
   }
   
 })

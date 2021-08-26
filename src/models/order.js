@@ -182,22 +182,34 @@ function findIdOrderByNumber(orderNumber)
     return orderId;
 }
 
-function addProductToOrder(orderNumber, idProductToAdd){
+function addProductToOrder(orderNumber, idProductToAdd, amount){
     let added = false;
     let orderIndex = findIdOrderByNumber(orderNumber);
     if(orderIndex >-1){
-        orders[orderIndex].getProductList().push(idProductToAdd);
+        for (let i = 0; i < amount; i++) {
+            orders[orderIndex].getProductList().push(idProductToAdd);
+        }
         added = true;
-    }
-    
+    }    
     return added;
 }
-function remProductToOrder(orderNumber, productIndexToRem){
+function remProductToOrder(orderNumber, productid, amount){
     let removed = false;
     let orderIndex = findIdOrderByNumber(orderNumber);
-    if(orderIndex >-1 && productIndexToRem >-1 && productIndexToRem < orders[orderIndex].getProductList().length)
+    let countProduct = 0;
+    let indexToRemove = [];
+    
+    if(orderIndex >-1)
     {
-        orders[orderIndex].getProductList().splice(productIndexToRem,1);
+        orders[orderIndex].getProductList().forEach(function(product, index){
+            if (product == productid){
+                indexToRemove.push(index);
+                countProduct++;
+            }
+        })
+        for (let i = 0; i < amount; i++) {
+            orders[orderIndex].getProductList().splice(indexToRemove[i],1);
+        }
         removed = true;
     }
     

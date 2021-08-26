@@ -15,11 +15,20 @@ router.use(express.json())
  *    tags: [Payment Methods]
  *    summary: Lista los metodos de pago
  *    description: Listado de metodos de pago
- *    tag: metodosdepago
+ *    parameters:
+ *       - in: query
+ *         name: userid
+ *         required: true
+ *         description: ID del usuario que desea ver la lista. Debe ser administrador.
+ *         schema:
+ *           type: integer
+ *           example: 0
  *    responses:
  *       200:
- *         description: Listado de usuarios
- */
+ *        description: Listado ok.
+ *       404:
+ *        description: El usuario no esta logueado o no tiene permiso.  
+*/
 router.get('/', isLogged, isAdmin, function(req, res){
   res.json(paymentMModule.listActivePaymentM())
 })
@@ -36,6 +45,13 @@ router.get('/', isLogged, isAdmin, function(req, res){
  *    consumes:
  *      - application/json
  *    parameters:
+ *      - in: query
+ *        name: userid
+ *        required: true
+ *        description: id del usuario logueado.
+ *        schema:
+ *          type: integer
+ *          example: 0 
  *      - in: body
  *        name: paymentmethod
  *        description: nombre y codigo del metodo de pago
@@ -54,13 +70,13 @@ router.get('/', isLogged, isAdmin, function(req, res){
  *              type: string
  *              example: UL
  *    responses:
- *      200:
+ *      201:
  *       description: Metodo de pago Agregado 
  *      404:
  *       description: el metodo de pago no fue creado
  */
 router.post('/', isLogged, isAdmin, createPaymentM, function(req, res){
-    res.json({"Mensaje":"metodo de pago creado"})
+    res.status(201).json({"Mensaje":"metodo de pago creado"})
 })
 //#endregion
 
@@ -75,6 +91,13 @@ router.post('/', isLogged, isAdmin, createPaymentM, function(req, res){
  *    consumes:
  *      - application/json
  *    parameters:
+ *      - in: query
+ *        name: userid
+ *        required: true
+ *        description: id del usuario logueado.
+ *        schema:
+ *          type: integer
+ *          example: 0 
  *      - in: path
  *        name: id
  *        required: true
@@ -100,13 +123,13 @@ router.post('/', isLogged, isAdmin, createPaymentM, function(req, res){
  *              type: string
  *              example: UL
  *    responses:
- *      200:
+ *      201:
  *       description: Metodo de pago actualizado 
  *      404:
  *       description: el metodo de pago no fue actualizado
  */
 router.put('/:id',isLogged, isAdmin, modifyPaymentM, function(req, res){
-    res.json({"Mensaje":"metodo de pago modificado"})
+    res.status(201).json({"Mensaje":"metodo de pago modificado"})
 })
 //#endregion
 
@@ -136,14 +159,14 @@ router.put('/:id',isLogged, isAdmin, modifyPaymentM, function(req, res){
  *          type: integer
  *          example: 2
  *    responses:
- *      201:
+ *      200:
  *       description: Metodo de pago eliminado
  *      401:
  *       description: Metodo de pago no eliminado
  *      
  */
-router.delete('/:id/', deletePaymentM, function(req, res){
-    res.json({"Mensaje":"Metodo de pago eliminado"})
+router.delete('/:id/', isLogged, isAdmin, deletePaymentM, function(req, res){
+    res.status(200).json({"Mensaje":"Metodo de pago eliminado"})
 })
 //#endregion
 

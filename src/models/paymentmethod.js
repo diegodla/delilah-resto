@@ -67,7 +67,14 @@ function getPaymentName(code){
 
 function modifyPaymentM(paymentMId,name, code){
     let modified = false;
-    if(!findPaymentCode(code)&& paymentMId>-1 && paymentMId< paymentMethods.length){
+    let verif = false;
+    if(findPaymentCode(code) && code == paymentMethods[paymentMId].getCode()){
+        verif = true;
+    }
+    else if(!findPaymentCode(code)){
+        verif = true;
+    }
+    if(verif && paymentMId>-1 && paymentMId< paymentMethods.length){
         paymentMethods[paymentMId].setName(name);
         paymentMethods[paymentMId].setCode(code);
         modified = true;

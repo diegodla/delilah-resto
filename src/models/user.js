@@ -78,30 +78,40 @@ function login(user, pass){
 
 function createUser(user, pass, pass2, phone, name, surname, email, dni,  address){
     //compruebo que los campos obligatorios esten con valores
-    let created = false; 
+    
+    let controls = {
+        "created":false,
+        "exist":true,
+        "passCompare":false,
+        "fullFields":true
+    }
     let camposObligatorios = true;
-    if(user==null || pass==null || pass2==null || name==null || surname==null || email==null || dni==null  || phone==null || address==null){
-        camposObligatorios=false;
-        console.log("Hay algun campo vacio, fijate");
+    console.log(user);
+    if(user=="" || pass=="" || pass2=="" || name==undefined || surname==undefined || email==undefined || dni==undefined  || phone==undefined || address==undefined || user==undefined || pass==undefined || pass2==undefined || name==undefined || surname==undefined || email==undefined || dni==undefined  || phone==undefined || address==undefined){
+        console.log("Hay algun campo vacio");
+        controls.fullFields = false;
     }
     let id = getUserId(user, email);
+    if(id == -1){
+        controls.exist=false;
+    }
+    if(textCompare(pass,pass2)){
+        controls.passCompare = true;
+    }
 
     //si id es -1 no existe ni el usuario ni el email
     //ademas si textCompare retorna true entonces las contraseñas coinciden
     //Ademas compruebo que los campos no esten vacios
-    if(id == -1 && textCompare(pass,pass2) && camposObligatorios)
+    if(!controls.exist && controls.passCompare && controls.fullFields)
     {  
         let newUser = new User(user, pass, name, surname, email, dni, phone, address, asignId(users));
         users.push(newUser);
-        created = true;
+        controls.created = true;
     }
     else{
-        console.log("NO SE CUMPLIO ALGUNA CONDICION");
-        console.log("ID:"+id);
-        console.log("Conincidencia en password:"+textCompare(pass,pass2));
-        console.log("Campos obligatorios llenos:"+camposObligatorios);
+        console.log("usuario no creado");
     }
-    return created;
+    return controls;
 }
 
 //para comprobar users al momento de login este metodo se puede usaro ingresando user, user. entonces no importa si el usuario ingreso usuario o email. si exsite lo va a encontrar.
@@ -176,7 +186,6 @@ function isLogged(id){
 }
 
 function isAdmin(id){
-    
     let isAdmin = false; 
     if (id > -1 && id < users.length){
         isAdmin = users[id].getIsAdmin();
@@ -203,4 +212,4 @@ function listActiveUsers(){
     return activeUsers;
 }
 
-module.exports={User, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser, isLogged, logedUsers,listActiveUsers,findAddress, isAdmin};
+module.exports={User, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser, isLogged, logedUsers,listActiveUsers,findAddress, isAdmin, textCompare};

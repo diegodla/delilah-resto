@@ -5,7 +5,7 @@ const {createProduct, modifyProduct, deleteProduct} = require('../middlewares/pr
 const {isLogged, isAdmin} = require('../middlewares/users')
 router.use(express.json())
 
-//#region /products/
+//#region GET/products/
 /**
  * @swagger
  * /products/:
@@ -28,7 +28,7 @@ router.use(express.json())
  *        description: El usuario no esta logueado o no tiene permiso.  
 */
 router.get('/', isLogged, function(req, res){
-  res.json(productModule.listActiveProducts())
+  res.status(200).json(productModule.listActiveProducts())
 })
 //#endregion
 
@@ -80,7 +80,7 @@ router.get('/', isLogged, function(req, res){
  *      
  */
 router.post('/', isLogged, isAdmin, createProduct, function(req, res){
-  res.json({"Mensaje":"Producto Creado"})
+  res.status(201).json({"Mensaje":"Producto Creado"})
 })
 //#endregion
 
@@ -139,7 +139,7 @@ router.post('/', isLogged, isAdmin, createProduct, function(req, res){
  *      
  */
 router.put('/:id/', isLogged, isAdmin, modifyProduct, function(req, res){
-  res.json({"Mensaje":"Producto Modificado"})
+  res.status(201).json({"Mensaje":"Producto Modificado"})
 })
 //#endregion
 
@@ -169,14 +169,14 @@ router.put('/:id/', isLogged, isAdmin, modifyProduct, function(req, res){
  *          type: string
  *          example: 4
  *    responses:
- *      201:
+ *      200:
  *       description: Producto eliminado
  *      401:
  *       description: Producto no eliminado
  *      
  */
 router.delete('/:id/', isLogged,isAdmin, deleteProduct, function(req, res){
-  res.json({"Mensaje":"Producto eliminado"})
+  res.status(200).json({"Mensaje":"Producto eliminado"})
 })
 //#endregion
 
