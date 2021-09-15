@@ -3,8 +3,8 @@
 Node.js v14.17.3
 
 ⚙️ Procedimiento :
-## 1 - Instalación del proyecto. 
-Clonar proyecto con el comando :
+## 1 - Instalación del proyecto.
+Descomprimir el archivo .zip o clonar proyecto con el comando :
 git clone https://github.com/diegodla/delilah-resto.git
 ## 2 - Instalación de dependencias. 
 Para instalar las dependencias utilizar el comando: npm install
