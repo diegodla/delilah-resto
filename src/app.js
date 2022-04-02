@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const config = require('./config');
+//const database = require('./database/db');
+///////////
+//const sequelize = require('../src/connection/sequelize');
+///////////
+const database = require('./database/db');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 const swaggerOptions = {
@@ -37,9 +42,10 @@ const swaggerOptions = {
     },
 ]
 };
+
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-const initModule = require('./models/init');
+//const initModule = require('./models/init');
 const routerUsers = require('./routes/users');
 const routerProducts = require('./routes/products');
 const routerPaymentM = require('./routes/paymentmethod');
