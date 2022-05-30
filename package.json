@@ -4,11 +4,14 @@
   "description": "Aplicacion de administracion de pedidos de comidas",
   "main": "js/app.js",
   "dependencies": {
+    "@apidevtools/swagger-parser": "^10.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "install-peerdeps": "^3.0.3",
     "mariadb": "^2.5.4",
     "moment": "^2.29.1",
     "nodemon": "^2.0.12",
+    "openapi-types": "^10.0.0",
     "sequelize": "^6.6.5",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6"

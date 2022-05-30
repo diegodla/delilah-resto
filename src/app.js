@@ -45,7 +45,7 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-//const initModule = require('./models/init');
+const initModule = require('./models/init');
 const routerUsers = require('./routes/users');
 const routerProducts = require('./routes/products');
 const routerPaymentM = require('./routes/paymentmethod');
