@@ -1,11 +1,11 @@
-const userModule = require('./user');
+//const userModule = require('./user');
 const productModule = require('./product');
 const paymentMModule = require('./paymentmethod')
 const orderModule = require('./order')
 
 /* ********************************* USUARIOS ********************************* */
 
-let admin = new userModule.User("admin", "delicontrol", "admin", null, "admin@delilah-resto.com", null, "444000", "Perito Moreno 247",0);
+/*let admin = new userModule.User("admin", "delicontrol", "admin", null, "admin@delilah-resto.com", null, "444000", "Perito Moreno 247",0);
 admin.setIsAdmin(true);
 userModule.users.push(admin);
 userModule.createUser("adrielb", "adrielpass", "adrielpass", "154698987" ,"Adriel","Baez", "adriel@baez.com", "41234567", "Piedras 141");

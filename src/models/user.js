@@ -1,4 +1,78 @@
-class Person {
+const { /*Sequelize,*/ DataTypes, Model} = require('sequelize');
+const sequelize = require('../database/db');
+
+class User extends Model {}
+
+User.init({
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    surname: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    dni: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
+    userName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+    },
+    isDeleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    }/*,
+    createAt:{
+        type: DataTypes.DATE,
+        defaultValue: sequelize.literal('NOW()')
+    },
+    updateAt:{
+        type: DataTypes.DATE,
+        defaultValue: sequelize.litearl('NOW()')
+    }*/
+},{
+    //other model options go here
+    timestamps: false ,
+    sequelize,
+    modelName: 'User'
+});
+
+module.exports = User; 
+console.log("User = sequelize.model.user: ",User === sequelize.models.User); // true
+
+
+
+
+
+///////////////////////////////////////////////////// A PARTIR DE ACA COMIENZA EL CODIGO UTILIZADO PARA TRABAJAR CON ARRAY LIST///////////////////////////////////////////////
+/*class Person {
     constructor(name, surname, email, dni, phone, address, id){
         this.id = id;
         this.name = name;
@@ -213,3 +287,4 @@ function listActiveUsers(){
 }
 
 module.exports={User, users, textCompare, login, createUser, getUserId, deleteUser, modifyUser, modifyIsAdmin, findUser, isLogged, logedUsers,listActiveUsers,findAddress, isAdmin, textCompare};
+*/

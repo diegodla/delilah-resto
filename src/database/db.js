@@ -1,7 +1,7 @@
 require('dotenv').config({ path: __dirname + '/./../../.env' });
 
-const { Sequelize, DataTypes } = require('sequelize');
-const { createUser } = require('../models/user');
+const { Sequelize} = require('sequelize');
+//const { createUser, Userdb } = require('../models/user');
 // https://sequelize.org/master/manual/getting-started.html
 
 //const connection = await mysql.createConnection({ host, port, user, password });
@@ -24,45 +24,42 @@ async function authenticate_mysql() {
     }
 };
 
-
-const User = sequelize.define('user',{
-     name: Sequelize.STRING,
-     surname: Sequelize.STRING,
-     email: Sequelize.STRING,
-     dni: Sequelize.INTEGER,
-     /*dni: {
-         type: DataTypes.INTEGER,
-         allowNull: false,
-         unique: true
-     },*/
-     phone: Sequelize.STRING,
-     address: Sequelize.STRING,
-     userName: Sequelize.STRING,
-     password: Sequelize.STRING 
-    }, {
-     timestamps: false 
-});
-async function createUser2() {
-    try{
-        await User.create({
-            name: "damian",
-            surname: "Lecuna",
-            email: "lecuna.damian@gmail.com",
-            dni: 32233333,
-            phone: "15555555",
-            address: "9 de Agosto",
-            userName: "damianl",
-            password: "damianpass"
-        });
-    } catch (error) {
-        console.error('Error al crear el usuario:', error);
-    }
-
-    
-}
-
 authenticate_mysql();
-createUser2();
 
 
 module.exports = sequelize; 
+
+/*const User = sequelize.define('user',{
+    name: Sequelize.STRING,
+    surname: Sequelize.STRING,
+    email: Sequelize.STRING,
+    dni: Sequelize.INTEGER,
+    /*dni: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true
+    },*//*
+    phone: Sequelize.STRING,
+    address: Sequelize.STRING,
+    userName: Sequelize.STRING,
+    password: Sequelize.STRING 
+   }, {
+    timestamps: false 
+});
+async function createUser2() {
+    try{
+        await Userdb.create({
+            name: "Diego",
+            surname: "Lecuna",
+            email: "lecuna.damian@gmail.com",
+            dni: 31233,
+            phone: "8378373737",
+            address: "9 de Agosto",
+            userName: "jdhd",
+            password: "kjdkjdjkd"
+        });
+    } catch (error) {
+        console.error('Error al crear el usuario:', error);
+    }    
+}*/
+//createUser2();

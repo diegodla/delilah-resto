@@ -45,19 +45,23 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
-const initModule = require('./models/init');
+//const initModule = require('./models/init');
 const routerUsers = require('./routes/users');
-const routerProducts = require('./routes/products');
-const routerPaymentM = require('./routes/paymentmethod');
-const routerOrders = require('./routes/orders')
+//const routerProducts = require('./routes/products');
+//const routerPaymentM = require('./routes/paymentmethod');
+//const routerOrders = require('./routes/orders')
 
 app.listen(config.port, () => console.log("listening on "+config.port));
 
 app.use('/users',routerUsers);
-app.use('/products',routerProducts);
-app.use('/paymentmethods', routerPaymentM);
-app.use('/orders', routerOrders)
+//app.use('/products',routerProducts);
+//app.use('/paymentmethods', routerPaymentM);
+//app.use('/orders', routerOrders)
 app.use(express.json())
 app.use('/delilah-docs',
    swaggerUI.serve,
    swaggerUI.setup(swaggerDocs));
+
+
+const usercontrol = require('./controllers/user');
+usercontrol.signup();

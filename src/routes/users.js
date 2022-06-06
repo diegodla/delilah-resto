@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const userModule = require('../models/user')
+//const userModule = require('../models/user')
 const orderModule = require ('../models/order');
-const {isExists, login, isLogged, logout, deleteUser,modifyUser, modifyUserA, createUser, isAdmin} = require('../middlewares/users')
+//const {isExists, login, isLogged, logout, deleteUser,modifyUser, modifyUserA, createUser, isAdmin} = require('../middlewares/users')
 router.use(express.json())
 
 
@@ -30,9 +30,10 @@ router.use(express.json())
  *       404:
  *        description: El usuario no esta logueado o no tiene permiso.  
 */
-router.get('/', isLogged, isAdmin, function (req, res){
+//////////////////////////////
+/*router.get('/', isLogged, isAdmin, function (req, res){
   res.status(200).json(userModule.listActiveUsers());
-})
+})*/
 //#endregion
 
 //#region POST/users/signup
@@ -106,9 +107,10 @@ router.get('/', isLogged, isAdmin, function (req, res){
  *       description: Usuario no registrado
  *      
  */
-router.post('/signup', isExists, createUser, function (req, res){
+///////////////////////
+/*router.post('/signup', isExists, createUser, function (req, res){
   res.status(201).json({"Mensaje":"Usuario Creado"})
-})
+})*/
 //#endregion
 
 //#region POST/users/login
@@ -144,10 +146,11 @@ router.post('/signup', isExists, createUser, function (req, res){
  *      401:
  *       description: Usuario no encontrado (email/usuario y/o contraseña incorrecta)
  */
-router.post('/login', login, function (req, res){
+///////////
+/*router.post('/login', login, function (req, res){
   console.log(`Usuarios Logueados actualmente: ${userModule.logedUsers}`)
   res.status(200).json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
-})
+})*/
 //#endregion
 
 //#region POST/users/logout
@@ -172,10 +175,12 @@ router.post('/login', login, function (req, res){
  *       404:
  *        description: No se pudo realizar el Logout.  
 */
-router.post('/logout', logout, function (req, res){
+//////////////
+/*router.post('/logout', logout, function (req, res){
   console.log(`Usuarios Logueados actualmente ${userModule.logedUsers}`)
   res.status(200).json({"Mensaje":"Logout realizado"})
 })
+*/
 //#endregion
 
 //#region PUT /users/
@@ -245,9 +250,12 @@ router.post('/logout', logout, function (req, res){
  *       description: Usuario no actualizado
  *      
  */
+/*
+/////////////////////
 router.put('/', isLogged, modifyUser, function (req, res){
   res.status(200).json({"Mensaje":"Usuario Modificado"});
 })
+*/
 //#endregion
 
 //#region PUT /users/{id}
@@ -324,9 +332,10 @@ router.put('/', isLogged, modifyUser, function (req, res){
  *       description: Usuario no actualizado
  *      
  */
-router.put('/:id', isLogged, isAdmin, modifyUserA, function (req, res){
+///////////////
+/*router.put('/:id', isLogged, isAdmin, modifyUserA, function (req, res){
   res.status(200).json({"Mensaje":"Usuario Modificado"});
-})
+})*/
 //#endregion
 
 //#region DELETE /users/{id}
@@ -358,9 +367,12 @@ router.put('/:id', isLogged, isAdmin, modifyUserA, function (req, res){
  *       404:
  *        description: usuario  no encontrado.  
  */
+///////////////////
+/*
 router.delete('/:id', isLogged, isAdmin, deleteUser, function (req, res){
   res.status(200).json({"Mensaje":"Usuario Eliminado"})
 })
+*/
 //#endregion
 
 //#region GET/users/orders
@@ -385,7 +397,8 @@ router.delete('/:id', isLogged, isAdmin, deleteUser, function (req, res){
  *       404:
  *        description: El usuario no esta logueado. 
 */
-router.get('/orders/',isLogged, function (req, res){
+///////////////////
+/*router.get('/orders/',isLogged, function (req, res){
   let userOrders = orderModule.listUserOrders(req.query.userid);
   if(userOrders.length > 0)
   {
@@ -396,7 +409,7 @@ router.get('/orders/',isLogged, function (req, res){
     res.status(404).json({"Mensaje":"No hay ordenes para mostrar"})
   }
   
-})
+})*/
 //#endregion
 
 

@@ -1,6 +1,8 @@
 const userModule = require('../models/user');
 const orderModule = require('../models/order');
 
+
+
 function createUser(req, res, next){
     let b = req.body;
     let controls = userModule.createUser(b.userName, b.password, b.password2, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country);
@@ -18,7 +20,7 @@ function createUser(req, res, next){
     else{
         res.status(401).send({ resultado: false, mensaje: `No se pudo crear el usuario` });
     }
-}
+}/*
 function isExists(req, res, next) {
     let id = userModule.getUserId(req.body.userName, req.body.email);
     if (id !== -1) {
@@ -151,4 +153,4 @@ function remProduct(req, res, next){
     }
 }
 
-module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser, modifyUserA, createUser, isAdmin, addProduct, remProduct}
+module.exports = {isExists, login, isLogged, logout, deleteUser, modifyUser, modifyUserA, createUser, isAdmin, addProduct, remProduct}*/
