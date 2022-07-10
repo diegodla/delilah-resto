@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-//const userModule = require('../models/user')
+const userModule = require('../models/user')
 const orderModule = require ('../models/order');
 //const {isExists, login, isLogged, logout, deleteUser,modifyUser, modifyUserA, createUser, isAdmin} = require('../middlewares/users')
+const {checkFields, checkExists,createUser} = require ('../middlewares/users')
 router.use(express.json())
 
 
@@ -108,9 +109,18 @@ router.use(express.json())
  *      
  */
 ///////////////////////
-/*router.post('/signup', isExists, createUser, function (req, res){
+
+router.post('/signup', checkFields, checkExists, createUser, function (req, res){
   res.status(201).json({"Mensaje":"Usuario Creado"})
-})*/
+  console.log("usuario creado")
+})
+
+/*VIEJO BORRAR AL FINALIZAR
+router.post('/signup', isExists, createUser, function (req, res){
+  res.status(201).json({"Mensaje":"Usuario Creado"})
+})
+*/
+
 //#endregion
 
 //#region POST/users/login

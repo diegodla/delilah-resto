@@ -64,8 +64,20 @@ User.init({
     modelName: 'User'
 });
 
-module.exports = User; 
+
+function textCompare(texto1, texto2){
+    let iguales = false;
+    if (texto1 == texto2){
+        iguales = true;
+    }
+    
+    return iguales;
+    
+}
+
 console.log("User = sequelize.model.user: ",User === sequelize.models.User); // true
+module.exports = {User, textCompare} 
+
 
 
 

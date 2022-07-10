@@ -64,4 +64,4 @@ app.use('/delilah-docs',
 
 
 const usercontrol = require('./controllers/user');
-usercontrol.signup();
+//usercontrol.signup();

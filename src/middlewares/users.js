@@ -1,26 +1,63 @@
-const userModule = require('../models/user');
+//const userModule = require('../models/user');
+const userModule = require('../controllers/user');
 const orderModule = require('../models/order');
+const {signup, isExists, fullFields} = require ('../controllers/user')
 
-
-
-function createUser(req, res, next){
+function checkFields(req, res, next) {
     let b = req.body;
-    let controls = userModule.createUser(b.userName, b.password, b.password2, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country);
+    let controls = fullFields(b.userName, b.password, b.password2, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country);
+    if (!controls.fullFields) {
+        res.status(401).send({ resultado: false, mensaje: `Todos los campos son obligatorios` });
+    } 
+    else if (!controls.passCompare){
+        res.status(401).send({ resultado: false, mensaje: `las contraseñas deben coincidir` });
+    }
+    else{
+        next();
+    }
+}
+async function checkExists(req, res, next) {
+    let controls = await isExists(req.body.userName, req.body.email);
+    if (controls.userExist) {
+        res.status(401).send({ resultado: false, mensaje: `Nombre de usuario ya registrado` });
+    } 
+    else if (controls.emailExist){
+        res.status(401).send({ resultado: false, mensaje: `Correo electronico ya registrado` });
+    }
+    else{
+        next();
+    }
+}
+async function createUser(req, res, next){
+    let b = req.body;
+    //ESTE CREATEUSER AHORA ES CONTROLLER.USER.SIGNUP
+    let controls = await signup(b.userName, b.password, b.password2, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country);
     if(controls.created){
         next();
     }
+    /*else if(controls.userExist){
+        res.status(401).send({ resultado: false, mensaje: `El nombre de usuario ya esta en uso, por favor elija otro` });
+    }
+    else if(controls.emailExist){
+        res.status(401).send({ resultado: false, mensaje: `El correo electronico ya se encuentra registrado` });
+    }
     else if (!controls.passCompare)
     {
+        console.log("estoy en midleware/user.createuser en el else if de passcmpare.. las contraseñas son iguales?"+controls.passCompare)
         res.status(401).send({ resultado: false, mensaje: `Las contraseñas no coinciden` });
     }
     else if (!controls.fullFields)
     {
         res.status(401).send({ resultado: false, mensaje: `Verifique los campos obligatorios. no pueden estar vacios` });
-    }
+    }*/
     else{
         res.status(401).send({ resultado: false, mensaje: `No se pudo crear el usuario` });
     }
-}/*
+}
+
+module.exports = {createUser,checkExists,checkFields}
+
+/*
 function isExists(req, res, next) {
     let id = userModule.getUserId(req.body.userName, req.body.email);
     if (id !== -1) {
