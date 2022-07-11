@@ -1,8 +1,6 @@
 const sequelize = require ('../database/db');
-const users = require ( '../models/user');
-const {User} = require('../models/user')
+const {User, textCompare} = require('../models/user')
 const bcrypt = require('bcryptjs');
-const { use } = require('../routes/users');
 require('dotenv').config();
 
 /*exports.login = async function login(req, res, next){
@@ -62,7 +60,8 @@ exports.fullFields = function fullFields(user, pass, pass2, phone, name, surname
     }
 
      //Si textCompare retorna true entonces las contraseñas coinciden
-    if(users.textCompare(pass,pass2)){
+
+    if(textCompare(pass,pass2)){
         controls.passCompare = true;
     }
     return controls;
@@ -94,7 +93,7 @@ exports.isExists = async function isExists (user, email){
     return controls;
 }
 
-exports.signup = async function signup(user, pass, pass2, phone, name, surname, email, dni,  address){
+exports.signup = async function signup(user, pass, phone, name, surname, email, dni,  address){
     
     let controls = {
         "created":false

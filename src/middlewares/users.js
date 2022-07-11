@@ -1,4 +1,5 @@
 //const userModule = require('../models/user');
+const jwt = require('jsonwebtoken');
 const userModule = require('../controllers/user');
 const orderModule = require('../models/order');
 const {signup, isExists, fullFields} = require ('../controllers/user')
@@ -35,27 +36,28 @@ async function createUser(req, res, next){
     if(controls.created){
         next();
     }
-    /*else if(controls.userExist){
-        res.status(401).send({ resultado: false, mensaje: `El nombre de usuario ya esta en uso, por favor elija otro` });
-    }
-    else if(controls.emailExist){
-        res.status(401).send({ resultado: false, mensaje: `El correo electronico ya se encuentra registrado` });
-    }
-    else if (!controls.passCompare)
-    {
-        console.log("estoy en midleware/user.createuser en el else if de passcmpare.. las contraseñas son iguales?"+controls.passCompare)
-        res.status(401).send({ resultado: false, mensaje: `Las contraseñas no coinciden` });
-    }
-    else if (!controls.fullFields)
-    {
-        res.status(401).send({ resultado: false, mensaje: `Verifique los campos obligatorios. no pueden estar vacios` });
-    }*/
     else{
         res.status(401).send({ resultado: false, mensaje: `No se pudo crear el usuario` });
     }
 }
 
-module.exports = {createUser,checkExists,checkFields}
+
+function autenticarUsuario(req, res, next) {
+    try{
+        const token = req.headers.authorization.split(' ')[1];
+        const verificarToken = jwt.verify(token, jwtsign);
+        if(verificarToken){
+            req.usuario = verificarToken;
+            return next();
+        }
+
+    }
+    catch(err){
+        res.json({error: 'Error al vlaidar usuario'})
+    }
+}
+
+module.exports = {createUser,checkExists,checkFields,autenticarUsuario}
 
 /*
 function isExists(req, res, next) {

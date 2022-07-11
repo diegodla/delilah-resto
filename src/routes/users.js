@@ -3,7 +3,7 @@ const router = express.Router();
 const userModule = require('../models/user')
 const orderModule = require ('../models/order');
 //const {isExists, login, isLogged, logout, deleteUser,modifyUser, modifyUserA, createUser, isAdmin} = require('../middlewares/users')
-const {checkFields, checkExists,createUser} = require ('../middlewares/users')
+const {checkFields, checkExists,createUser,autenticarUsuario} = require ('../middlewares/users')
 router.use(express.json())
 
 
@@ -157,7 +157,13 @@ router.post('/signup', isExists, createUser, function (req, res){
  *       description: Usuario no encontrado (email/usuario y/o contraseña incorrecta)
  */
 ///////////
-/*router.post('/login', login, function (req, res){
+router.post('/login', autenticarUsuario, (req, res)=>{
+  console.log(`Usuarios Logueados actualmente: ${userModule.logedUsers}`)
+  res.status(200).json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
+})
+/*
+VIEJO BORRAR AL FINALIZAR
+router.post('/login', login, function (req, res){
   console.log(`Usuarios Logueados actualmente: ${userModule.logedUsers}`)
   res.status(200).json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
 })*/
