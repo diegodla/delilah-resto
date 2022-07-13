@@ -1,4 +1,4 @@
-const sequelize = require ('../database/db');
+//const sequelize = require ('../database/db');
 const {User, textCompare} = require('../models/user')
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
@@ -60,7 +60,6 @@ exports.fullFields = function fullFields(user, pass, pass2, phone, name, surname
     }
 
      //Si textCompare retorna true entonces las contraseñas coinciden
-
     if(textCompare(pass,pass2)){
         controls.passCompare = true;
     }
@@ -98,11 +97,11 @@ exports.signup = async function signup(user, pass, phone, name, surname, email, 
     let controls = {
         "created":false
     }
-    
+    console.log("usuario"+user, "pass"+pass, "tel"+phone, "nombre"+name, "apellido"+surname, "email"+email, "dni"+dni,  "direccion"+address) 
     try{
         //Creo el usuario en BD
-        await User.create({
-                name: name,
+         await User.create({
+                name: name, 
                 surname: surname,
                 email: email,
                 dni: dni,
@@ -110,9 +109,10 @@ exports.signup = async function signup(user, pass, phone, name, surname, email, 
                 address: address,
                 userName: user,
                 password: pass
-            });
+            }); 
             controls.created = true;
     }
+    
     catch(error){
         console.error('Error al crear el usuario:', error);
         //res.status(201).send({ status: "error al crear el usuario"})

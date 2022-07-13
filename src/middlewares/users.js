@@ -6,7 +6,7 @@ const {signup, isExists, fullFields} = require ('../controllers/user')
 
 function checkFields(req, res, next) {
     let b = req.body;
-    let controls = fullFields(b.userName, b.password, b.password2, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country);
+    let controls = fullFields(b.userName, b.password, b.password2, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country); //aca esta lo que esta imprimiendo
     if (!controls.fullFields) {
         res.status(401).send({ resultado: false, mensaje: `Todos los campos son obligatorios` });
     } 
@@ -32,7 +32,7 @@ async function checkExists(req, res, next) {
 async function createUser(req, res, next){
     let b = req.body;
     //ESTE CREATEUSER AHORA ES CONTROLLER.USER.SIGNUP
-    let controls = await signup(b.userName, b.password, b.password2, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country);
+    let controls = await signup(b.userName, b.password, b.phone, b.name, b.surname, b.email, b.dni, b.address, b.country);
     if(controls.created){
         next();
     }
