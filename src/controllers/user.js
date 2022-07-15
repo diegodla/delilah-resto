@@ -97,7 +97,7 @@ exports.signup = async function signup(user, pass, phone, name, surname, email, 
     let controls = {
         "created":false
     }
-    console.log("usuario"+user, "pass"+pass, "tel"+phone, "nombre"+name, "apellido"+surname, "email"+email, "dni"+dni,  "direccion"+address) 
+
     try{
         //Creo el usuario en BD
          await User.create({
@@ -108,7 +108,7 @@ exports.signup = async function signup(user, pass, phone, name, surname, email, 
                 phone: phone,
                 address: address,
                 userName: user,
-                password: pass
+                password: await bcrypt.hash(pass, 10)
             }); 
             controls.created = true;
     }
