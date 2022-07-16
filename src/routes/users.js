@@ -159,7 +159,7 @@ router.post('/signup', isExists, createUser, function (req, res){
 ///////////
 router.post('/login', autenticarUsuario, (req, res)=>{
   console.log(`Usuarios Logueados actualmente: ${userModule.logedUsers}`)
-  res.status(200).json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
+  //res.status(200).json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
 })
 /*
 VIEJO BORRAR AL FINALIZAR

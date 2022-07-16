@@ -48,7 +48,9 @@ User.init({
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
-    }/*,
+    },
+    token: { type: DataTypes.STRING,
+        allowNull: true}/*,
     createAt:{
         type: DataTypes.DATE,
         defaultValue: sequelize.literal('NOW()')

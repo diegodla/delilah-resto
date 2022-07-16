@@ -1,52 +1,57 @@
 //const sequelize = require ('../database/db');
 const {User, textCompare} = require('../models/user')
 const bcrypt = require('bcryptjs');
+const keys = require('../keys')
+const jwt = require('jsonwebtoken');
+//const { application } = require('express');
+//const { resolve } = require('@apidevtools/swagger-parser');
 require('dotenv').config();
 
-/*exports.login = async function login(req, res, next){
+exports.login = async function login(userName, password, res){
     try {
-        const {userName, password, isAdmin} = req.body
-        if(!isAdmin||isAdmin==undefined){
-            isAdmin==false;
-        }
-        console.log("Login exitoso", useName, password);
-        const user = await users.findOne({ where: {userName: userName} }).then((user) => {
-            if (!user) return donde(null, false, { message: `No se encuentra el usuario ${userName}`});
-            return user.
-        });
+        const user = await User.findOne({ where: {userName: userName} }).then((user) => {
+            if(!user){
+                res.status(200).send({
+                    message: "El usuario no existe:"
+                });
+            }
+            else{
+                bcrypt.compare(password,user.password, (err, coinciden) => {
+                    if (err) {
+                        res.status(404).send({
+                            message: "Error comprobando usuario y contraseña:",
+                            error: err
+                        });
+                        console.log("Error comprobando usuario y contraseña:", err);
+                    } 
+                    else {
+                        if(coinciden){
+                            const payload = {
+                                check: true
+                            };
+                            const token = jwt.sign(payload, keys.key,{
+                                expiresIn: '2h'
+                            });
+                            res.status(401).send({
+                                message: "Autenticacion exitosa",
+                                token: token
+                            })
+                        }
+                        else{
+                            res.status(200).send({
+                                message: "usuario o password incorrectos"
+                            })
+                        }
+                    }
+                });
+            } 
+        })
+    }
+    catch(error){
+        console.error('Error al buscar los campos solicitados:', error);
+    }
+}
 
-        if(!user){
-            console.log("Usuario no registrado");
-            res.status(400).send({status:"Usuario no registrado"});
-        }
-        else{
-
-        }
-    }
-    catch{
-
-    }
-}*/
-/*exports.signup = async function signup(req, res, next){
-    console.log("Estoy en try?")
-    try{
-        await users.create({
-            name: "Diego",
-            surname: "Lecuna",
-            email: "lecuna.damian@gmail.com",
-            dni: 31233,
-            phone: "8378373737",
-            address: "9 de Agosto",
-            userName: "jdhd",
-            password: "kjdkjdjkd"
-        });
-        res.status()
-    }
-    catch{
-        console.error('Error al crear el usuario:', error);
-        res.status(201).send({ status: "error al crear el usuario"})
-    }
-}*/
 exports.fullFields = function fullFields(user, pass, pass2, phone, name, surname, email, dni,  address){
     console.log("Chequeando campos para crear al usuario: "+user);
     let controls = {

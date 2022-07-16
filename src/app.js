@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const config = require('./config');
+const keys = require('./keys')
 //const database = require('./database/db');
 ///////////
 //const sequelize = require('../src/connection/sequelize');
@@ -51,6 +52,7 @@ const routerUsers = require('./routes/users');
 //const routerPaymentM = require('./routes/paymentmethod');
 //const routerOrders = require('./routes/orders')
 
+app.set('key', keys.key)
 app.listen(config.port, () => console.log("listening on "+config.port));
 
 app.use('/users',routerUsers);

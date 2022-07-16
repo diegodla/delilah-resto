@@ -1,8 +1,8 @@
 //const userModule = require('../models/user');
-const jwt = require('jsonwebtoken');
+
 const userModule = require('../controllers/user');
 const orderModule = require('../models/order');
-const {signup, isExists, fullFields} = require ('../controllers/user')
+const {signup, isExists, fullFields,login} = require ('../controllers/user')
 
 function checkFields(req, res, next) {
     let b = req.body;
@@ -42,19 +42,9 @@ async function createUser(req, res, next){
 }
 
 
-function autenticarUsuario(req, res, next) {
-    try{
-        const token = req.headers.authorization.split(' ')[1];
-        const verificarToken = jwt.verify(token, jwtsign);
-        if(verificarToken){
-            req.usuario = verificarToken;
-            return next();
-        }
-
-    }
-    catch(err){
-        res.json({error: 'Error al vlaidar usuario'})
-    }
+async function autenticarUsuario(req, res, next) {
+    await login(req.body.userName, req.body.password, res);
+    next();
 }
 
 module.exports = {createUser,checkExists,checkFields,autenticarUsuario}
