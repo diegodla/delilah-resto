@@ -2,7 +2,10 @@
 
 const userModule = require('../controllers/user');
 const orderModule = require('../models/order');
-const {signup, isExists, fullFields,login} = require ('../controllers/user')
+const keys = require('../keys')
+const jwt = require('jsonwebtoken');
+const {signup, isExists, fullFields,login} = require ('../controllers/user');
+const { JsonWebTokenError } = require('jsonwebtoken');
 
 function checkFields(req, res, next) {
     let b = req.body;
@@ -46,8 +49,34 @@ async function autenticarUsuario(req, res, next) {
     await login(req.body.userName, req.body.password, res);
     next();
 }
+function checkToken(req, res, next){
+    let tokn = req.headers['x-access-token'] || req.headers['authorization'];
+    if(!tokn){
+        res.status(401).send({
+            error: "Es necesario el token de autenticacion para poder seguir utiliznado las funcionalidades del sitio"
+        })
+        return
+    }
+    if(tokn.startsWith('Bearer ',)){
+        tokn = tokn.slice(7, tokn.lengh)
+    }
+    if(tokn){
+        jwt.verify(tokn, keys.key,(error, decoded)=>{
+            if(error){
+                return res.json({
+                    messge: 'El token es invalido, por favor vuelva a utenticarse'
+                })
+            }
+            else{
+                req.decoded = decoded;
+                next();
+            }
+        })
+    }
+    console.log(tokn)
+}
 
-module.exports = {createUser,checkExists,checkFields,autenticarUsuario}
+module.exports = {createUser,checkExists,checkFields,autenticarUsuario, checkToken}
 
 /*
 function isExists(req, res, next) {

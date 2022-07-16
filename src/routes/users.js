@@ -3,7 +3,7 @@ const router = express.Router();
 const userModule = require('../models/user')
 const orderModule = require ('../models/order');
 //const {isExists, login, isLogged, logout, deleteUser,modifyUser, modifyUserA, createUser, isAdmin} = require('../middlewares/users')
-const {checkFields, checkExists,createUser,autenticarUsuario} = require ('../middlewares/users')
+const {checkFields, checkExists,createUser,autenticarUsuario,checkToken} = require ('../middlewares/users')
 router.use(express.json())
 
 
@@ -158,7 +158,7 @@ router.post('/signup', isExists, createUser, function (req, res){
  */
 ///////////
 router.post('/login', autenticarUsuario, (req, res)=>{
-  console.log(`Usuarios Logueados actualmente: ${userModule.logedUsers}`)
+  //console.log(`Usuarios Logueados actualmente: ${userModule.logedUsers}`)
   //res.status(200).json({"Mensaje": `Usuario id: ${req.userid}, logueado satisfactoriamente`});
 })
 /*
@@ -191,7 +191,12 @@ router.post('/login', login, function (req, res){
  *       404:
  *        description: No se pudo realizar el Logout.  
 */
-//////////////
+router.post('/logout', checkToken, function (req, res){
+  res.status(200).json({"Mensaje":"Logout realizado"})
+  //console.log(`Usuarios Logueados actualmente ${userModule.logedUsers}`)
+  //res.status(200).json({"Mensaje":"Logout realizado"})
+})
+////////////// BORRAR DESPUES
 /*router.post('/logout', logout, function (req, res){
   console.log(`Usuarios Logueados actualmente ${userModule.logedUsers}`)
   res.status(200).json({"Mensaje":"Logout realizado"})
