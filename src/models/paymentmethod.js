@@ -1,3 +1,35 @@
+const { Sequelize, DataTypes, Model} = require('sequelize');
+const sequelize = require('../database/db');
+
+class PaymentMethod extends Model {}
+
+PaymentMethod.init({
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    code: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    isDeleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    }
+},{
+    //other model options go here
+    timestamps: false ,
+    sequelize,
+    modelName: 'PaymentMethod'
+});
+
+console.log("PaymentMethod = sequelize.model.Product: ",PaymentMethod === sequelize.models.PaymentMethod); // true
+module.exports = {PaymentMethod} 
+
+
+///////////////////////////////////////////////////// A PARTIR DE ACA COMIENZA EL CODIGO UTILIZADO PARA TRABAJAR CON ARRAY LIST///////////////////////////////////////////////
+/*
 class PaymentMethod {
     constructor(name, code, id){
         this.id = id;
@@ -103,3 +135,4 @@ function listActivePaymentM(){
     return activePaymentM;
 }
 module.exports={PaymentMethod,paymentMethods,createPaymentM,modifyPaymentM,findPaymentCode,deletePaymentM, listActivePaymentM,getPaymentName}
+*/

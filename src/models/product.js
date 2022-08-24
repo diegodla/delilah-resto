@@ -1,3 +1,38 @@
+const { Sequelize, DataTypes, Model} = require('sequelize');
+const sequelize = require('../database/db');
+
+class Product extends Model {}
+
+Product.init({
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    price: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+    },
+    isDeleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    }
+},{
+    //other model options go here
+    timestamps: false ,
+    sequelize,
+    modelName: 'Product'
+});
+
+console.log("Product = sequelize.model.Product: ",Product === sequelize.models.Product); // true
+module.exports = {Product} 
+
+///////////////////////////////////////////////////// A PARTIR DE ACA COMIENZA EL CODIGO UTILIZADO PARA TRABAJAR CON ARRAY LIST///////////////////////////////////////////////
+/*
 class Product{
     constructor(name, description, price, id){
         this.id = id; 
@@ -99,4 +134,4 @@ function listActiveProducts(){
     return activeProducts;
 }
 
-module.exports={Product, products, createProduct,findProductName,modifyProduct,deleteProduct, listActiveProducts}
+module.exports={Product, products, createProduct,findProductName,modifyProduct,deleteProduct, listActiveProducts}*/

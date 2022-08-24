@@ -1,3 +1,71 @@
+const { parseTwoDigitYear } = require('moment');
+const { Sequelize, DataTypes, Model} = require('sequelize');
+const sequelize = require('../database/db');
+
+class Order extends Model {}
+/*
+
+        this.number = number;
+        this.userId = userId;
+        this.productList = [];
+        this.status = statusList[0];
+        this.paymethod=paymethod;
+        this.address=address;
+        this.delivery=delivery;
+        this.date = new Date();
+        this.isDeleted = false;*/
+Order.init({
+    number: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    usedId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    status: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    paymethodId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    delivery: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: new Date()
+    },
+    isDeleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    }
+},{
+    //other model options go here
+    timestamps: false ,
+    sequelize,
+    modelName: 'Order'
+});
+
+console.log("Order = sequelize.model.Product: ",Order === sequelize.models.Order); // true
+module.exports = {Order} 
+
+///////////////////////////////////////////////////// A PARTIR DE ACA COMIENZA EL CODIGO UTILIZADO PARA TRABAJAR CON ARRAY LIST///////////////////////////////////////////////
+/*
 const userModule = require('./user');
 const paymentMModule = require ('./paymentmethod');
 const productModule = require ('./product');
@@ -285,3 +353,4 @@ function changeState(orderNumber, state){
 }
 
 module.exports={Order, orders, statusList, createOrder, calcPrice,listActiveOrders, deleteOrder, getOpenOrder, findIdOrderByNumber, addProductToOrder, modifyOrder,listUserOrders, changeState,closeOrder, remProductToOrder}
+*/
